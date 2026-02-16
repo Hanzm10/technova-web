@@ -7,7 +7,7 @@
     - [x] Sync Clerk Users to Supabase (Pending webhook implementation in Phase 2)
 
 - [ ] Phase 2: Core Architecture <!-- id: 2 -->
-    - [ ] Implement Layouts (Navbar, Footer, Sidebar)
+    - [x] Implement Layouts (Navbar, Footer, Sidebar)
     - [ ] Build Design System Components (Buttons, Cards, Inputs)
     - [ ] Setup Database Schema (Products, Orders)
 
