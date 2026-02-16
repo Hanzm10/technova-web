@@ -1,0 +1,148 @@
+﻿
+> temp_app@0.1.0 test
+> jest __tests__\components\auth\EntitlementGuard.test.tsx
+
+node.exe : FAIL __tests__/componen
+ts/auth/EntitlementGuard.test.tsx
+At C:\Program 
+Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : Not 
+   Specified: (FAIL __tests__/..  
+  .tGuard.test.tsx:String) [],    
+ RemoteException
+    + FullyQualifiedErrorId : Nat 
+   iveCommandError
+ 
+  EntitlementGuard
+    ├ù shows loading spinner when 
+RevenueCat is not ready (50 ms)
+    ΓêÜ redirects to /pricing 
+when user lacks entitlement (5 ms)
+    ΓêÜ renders children when 
+user has entitlement (3 ms)
+
+  ΓùÅ EntitlementGuard ΓÇ║ shows 
+loading spinner when RevenueCat 
+is not ready
+
+    TestingLibraryElementError: 
+Found multiple elements with the 
+role "generic" and name ""
+
+    Here are the matching 
+elements:
+
+    Ignored nodes: comments, 
+script, style
+    [36m<div>[39m
+      [36m<div[39m
+        
+[33mclass[39m=[32m"flex 
+items-center justify-center 
+min-h-screen"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"an
+imate-spin rounded-full h-12 w-12 
+border-b-2 border-slate-900"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+
+    Ignored nodes: comments, 
+script, style
+    [36m<div[39m
+      [33mclass[39m=[32m"flex 
+items-center justify-center 
+min-h-screen"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"anim
+ate-spin rounded-full h-12 w-12 
+border-b-2 border-slate-900"[39m
+      [36m/>[39m
+    [36m</div>[39m
+
+    Ignored nodes: comments, 
+script, style
+    [36m<div[39m
+      [33mclass[39m=[32m"animat
+e-spin rounded-full h-12 w-12 
+border-b-2 border-slate-900"[39m
+    [36m/>[39m
+
+    (If this is intentional, then 
+use the `*AllBy*` variant of the 
+query (like `queryAllByText`, 
+`getAllByText`, or 
+`findAllByText`)).
+
+    Ignored nodes: comments, 
+script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          
+[33mclass[39m=[32m"flex 
+items-center justify-center 
+min-h-screen"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"
+animate-spin rounded-full h-12 
+w-12 border-b-2 
+border-slate-900"[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+    [0m [90m 34 |[39m         )
+     [90m 35 |[39m
+    [31m[1m>[22m[39m[90m 36 
+|[39m         expect(screen[33m.
+[39mgetByRole([32m'generic'[39m
+[33m,[39m { name[33m:[39m 
+[32m''[39m 
+}))[33m.[39mtoBeInTheDocument() 
+[90m// The div for animation[39m
+     [90m    |[39m              
+         [31m[1m^[22m[39m
+     [90m 37 |[39m         expec
+t(screen[33m.[39mqueryByText([3
+2m'Protected Content'[39m))[33m.
+[39mnot[33m.[39mtoBeInTheDocume
+nt()
+     [90m 38 |[39m     })
+     [90m 39 |[39m[0m
+
+      at Object.getElementError (n
+ode_modules/@testing-library/dom/d
+ist/config.js:37:19)
+      at getElementError (node_mod
+ules/@testing-library/dom/dist/que
+ry-helpers.js:20:35)
+      at 
+getMultipleElementsFoundError (nod
+e_modules/@testing-library/dom/dis
+t/query-helpers.js:23:10)
+      at node_modules/@testing-lib
+rary/dom/dist/query-helpers.js:55:
+13
+      at node_modules/@testing-lib
+rary/dom/dist/query-helpers.js:95:
+19
+      at Object.getByRole (__tests
+__/components/auth/EntitlementGuar
+d.test.tsx:36:23)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 
+3 total
+Snapshots:   0 total
+Time:        1.018 s
+Ran all test suites matching __tes
+ts__\components\auth\EntitlementGu
+ard.test.tsx.

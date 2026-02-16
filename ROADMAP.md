@@ -19,7 +19,7 @@
     - [x] Shopping Cart Logic <!-- id: 3d -->
 
 - [ ] Phase 4: Billing & Admin <!-- id: 4 -->
-    - [ ] Integrate RevenueCat Web Billing
+    - [x] Integrate RevenueCat Web Billing
     - [x] Optimize Footer for Mobile <!-- id: 4a -->
     - [ ] Implement Checkout Flow
     - [ ] Build Admin Dashboard (Products/Orders Management)
