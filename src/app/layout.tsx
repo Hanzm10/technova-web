@@ -9,6 +9,20 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 export const metadata: Metadata = {
   title: "TechNova | Future of Retail",
   description: "A digital-first lifestyle brand for modern living.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://technova-web.vercel.app"),
+  openGraph: {
+    title: "TechNova | Future of Retail",
+    description: "A digital-first lifestyle brand for modern living.",
+    url: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://technova-web.vercel.app"),
+    siteName: "TechNova",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TechNova | Future of Retail",
+    description: "A digital-first lifestyle brand for modern living.",
+  },
 };
 
 export default function RootLayout({

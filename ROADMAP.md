@@ -18,13 +18,13 @@
     - [x] Product Details Page <!-- id: 3c -->
     - [x] Shopping Cart Logic <!-- id: 3d -->
 
-- [ ] Phase 4: Billing & Admin <!-- id: 4 -->
+- [x] Phase 4: Billing & Admin <!-- id: 4 -->
     - [x] Integrate RevenueCat Web Billing
     - [x] Optimize Footer for Mobile <!-- id: 4a -->
     - [x] Implement Checkout Flow
     - [x] Build Admin Dashboard (Products/Orders Management)
 
 - [ ] Phase 5: Polish & Launch <!-- id: 5 -->
-    - [ ] SEO Optimization (Metadata, OpenGraph)
+    - [x] SEO Optimization (Metadata, OpenGraph)
     - [ ] Performance Audit
     - [ ] Final QA & Deployment
