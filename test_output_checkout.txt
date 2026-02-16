@@ -1,0 +1,171 @@
+﻿
+> temp_app@0.1.0 test
+> jest __tests__\hooks\useCheckout.test.ts
+
+  console.error
+    Checkout error: Error: No offerings found
+        at Object.handleCheckout (C:\Users\Hanz Mapua\Workspace\technova-web\src\hooks\useCheckout.ts:32:23)
+        at handleCheckout (C:\Users\Hanz Mapua\Workspace\technova-web\__tests__\hooks\useCheckout.test.ts:44:34)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\@testing-library\react\dist\act-compat.js:47:24
+        at process.env.NODE_ENV.exports.act (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\react\cjs\react.development.js:814:22)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\@testing-library\react\dist\act-compat.js:46:25
+        at Object.<anonymous> (C:\Users\Hanz Mapua\Workspace\technova-web\__tests__\hooks\useCheckout.test.ts:43:18)
+        at Promise.finally.completed (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+        at _callCircusTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+        at _runTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+        at _runTestsForDescribeBlock (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+        at _runTestsForDescribeBlock (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+        at run (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+        at runAndTransformResultsToJestFormat (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+        at jestAdapter (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\runner.js:101:19)
+        at runTestInternal (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-runner\build\index.js:275:16)
+        at runTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-runner\build\index.js:343:7)
+
+    [0m [90m 54 |[39m
+     [90m 55 |[39m         } [36mcatch[39m (e[33m:[39m any) {
+    [31m[1m>[22m[39m[90m 56 |[39m             console[33m.[39merror([32m'Checkout error:'[39m[33m,[39m e)
+     [90m    |[39m                     [31m[1m^[22m[39m
+     [90m 57 |[39m             setError(e[33m.[39mmessage [33m||[39m [32m'An error occurred during checkout'[39m)
+     [90m 58 |[39m         } [36mfinally[39m {
+     [90m 59 |[39m             setIsLoading([36mfalse[39m)[0m
+
+      at Object.error [as handleCheckout] (src/hooks/useCheckout.ts:56:21)
+      at handleCheckout (__tests__/hooks/useCheckout.test.ts:44:34)
+      at node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at Object.<anonymous> (__tests__/hooks/useCheckout.test.ts:43:18)
+
+  console.error
+    Checkout error: Error: No offerings found
+        at Object.handleCheckout (C:\Users\Hanz Mapua\Workspace\technova-web\src\hooks\useCheckout.ts:32:23)
+        at handleCheckout (C:\Users\Hanz Mapua\Workspace\technova-web\__tests__\hooks\useCheckout.test.ts:77:34)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\@testing-library\react\dist\act-compat.js:47:24
+        at process.env.NODE_ENV.exports.act (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\react\cjs\react.development.js:814:22)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\@testing-library\react\dist\act-compat.js:46:25
+        at Object.<anonymous> (C:\Users\Hanz Mapua\Workspace\technova-web\__tests__\hooks\useCheckout.test.ts:76:18)
+        at Promise.finally.completed (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+        at _callCircusTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+        at _runTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+        at C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+        at _runTestsForDescribeBlock (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+        at _runTestsForDescribeBlock (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+        at run (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+        at runAndTransformResultsToJestFormat (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+        at jestAdapter (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-circus\build\runner.js:101:19)
+        at runTestInternal (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-runner\build\index.js:275:16)
+        at runTest (C:\Users\Hanz Mapua\Workspace\technova-web\node_modules\jest-runner\build\index.js:343:7)
+
+    [0m [90m 54 |[39m
+     [90m 55 |[39m         } [36mcatch[39m (e[33m:[39m any) {
+    [31m[1m>[22m[39m[90m 56 |[39m             console[33m.[39merror([32m'Checkout error:'[39m[33m,[39m e)
+     [90m    |[39m                     [31m[1m^[22m[39m
+     [90m 57 |[39m             setError(e[33m.[39mmessage [33m||[39m [32m'An error occurred during checkout'[39m)
+     [90m 58 |[39m         } [36mfinally[39m {
+     [90m 59 |[39m             setIsLoading([36mfalse[39m)[0m
+
+      at Object.error [as handleCheckout] (src/hooks/useCheckout.ts:56:21)
+      at handleCheckout (__tests__/hooks/useCheckout.test.ts:77:34)
+      at node_modules/@testing-library/react/dist/act-compat.js:47:24
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:814:22)
+      at node_modules/@testing-library/react/dist/act-compat.js:46:25
+      at Object.<anonymous> (__tests__/hooks/useCheckout.test.ts:76:18)
+
+node.exe : FAIL __tests__/hooks/us
+eCheckout.test.ts
+At C:\Program 
+Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : Not 
+   Specified: (FAIL __tests__/ho  
+  oks/useCheckout.test.ts:Strin   
+ g) [], RemoteException
+    + FullyQualifiedErrorId : Nat 
+   iveCommandError
+ 
+  useCheckout
+    ├ù starts checkout for items 
+in cart (39 ms)
+    ΓêÜ sets error when cart is 
+empty (2 ms)
+    ├ù handles purchase failure 
+(6 ms)
+
+  ΓùÅ useCheckout ΓÇ║ starts 
+checkout for items in cart
+
+    expect(jest.fn()).toHaveBeenCa
+lledWith(...expected)
+
+    Expected: ObjectContaining 
+{"identifier": "prod_1"}
+
+    Number of calls: 0
+
+    [0m [90m 45 |[39m         
+})
+     [90m 46 |[39m
+    [31m[1m>[22m[39m[90m 47 
+|[39m         expect(mockPurchase
+Package)[33m.[39mtoHaveBeenCalle
+dWith(expect[33m.[39mobjectConta
+ining({
+     [90m    |[39m              
+                       
+[31m[1m^[22m[39m
+     [90m 48 |[39m             
+identifier[33m:[39m 
+[32m'prod_1'[39m
+     [90m 49 |[39m         }))
+     [90m 50 |[39m         expec
+t(mockClearCart)[33m.[39mtoHaveB
+eenCalled()[0m
+
+      at 
+Object.toHaveBeenCalledWith (__tes
+ts__/hooks/useCheckout.test.ts:47:
+37)
+
+  ΓùÅ useCheckout ΓÇ║ handles 
+purchase failure
+
+    
+expect(received).toBe(expected) 
+// Object.is equality
+
+    Expected: "Payment failed"
+    Received: "No offerings found"
+
+    [0m [90m 78 |[39m         
+})
+     [90m 79 |[39m
+    [31m[1m>[22m[39m[90m 80 
+|[39m         expect(result[33m.
+[39mcurrent[33m.[39merror)[33m
+.[39mtoBe([32m'Payment 
+failed'[39m)
+     [90m    |[39m              
+                        
+[31m[1m^[22m[39m
+     [90m 81 |[39m         expec
+t(mockClearCart)[33m.[39mnot[33
+m.[39mtoHaveBeenCalled()
+     [90m 82 |[39m     })
+     [90m 83 |[39m })[0m
+
+      at Object.toBe (__tests__/ho
+oks/useCheckout.test.ts:80:38)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 1 passed, 
+3 total
+Snapshots:   0 total
+Time:        1.005 s
+Ran all test suites matching __tes
+ts__\hooks\useCheckout.test.ts.

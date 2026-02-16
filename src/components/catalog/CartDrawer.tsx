@@ -6,6 +6,7 @@ import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { useCartStore } from '@/hooks/useCartStore'
 import { Button } from '@/components/ui/button'
+import { useCheckout } from '@/hooks/useCheckout'
 
 interface CartDrawerProps {
     isOpen: boolean
@@ -14,6 +15,7 @@ interface CartDrawerProps {
 
 export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
     const { items, totalPrice, updateQuantity, removeItem } = useCartStore()
+    const { handleCheckout, isLoading, error } = useCheckout()
 
     // Lock body scroll when drawer is open
     useEffect(() => {
@@ -130,17 +132,28 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                                         USD {totalPrice.toFixed(2)}
                                     </span>
                                 </div>
-                                <Button className="w-full h-16 bg-slate-900 text-white rounded-2xl font-bold text-lg shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 group">
-                                    CHECKOUT
-                                    <motion.span
-                                        animate={{ x: [0, 5, 0] }}
-                                        transition={{ repeat: Infinity, duration: 1.5 }}
-                                    >
-                                        →
-                                    </motion.span>
+                                <Button
+                                    onClick={handleCheckout}
+                                    disabled={isLoading}
+                                    className="w-full h-16 bg-slate-900 text-white rounded-2xl font-bold text-lg shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isLoading ? 'PROCESSING...' : 'CHECKOUT'}
+                                    {!isLoading && (
+                                        <motion.span
+                                            animate={{ x: [0, 5, 0] }}
+                                            transition={{ repeat: Infinity, duration: 1.5 }}
+                                        >
+                                            →
+                                        </motion.span>
+                                    )}
                                 </Button>
+                                {error && (
+                                    <p className="text-xs text-red-500 text-center mt-2 font-medium">
+                                        {error}
+                                    </p>
+                                )}
                                 <p className="text-[10px] text-center text-slate-400 uppercase tracking-[0.2em]">
-                                    Shipping & taxes calculated at checkout
+                                    Secure checkout via RevenueCat
                                 </p>
                             </div>
                         )}

@@ -8,12 +8,14 @@ interface RevenueCatContextType {
     customerInfo: CustomerInfo | null
     offerings: Offerings | null
     isReady: boolean
+    purchases: any | null
 }
 
 const RevenueCatContext = createContext<RevenueCatContextType>({
     customerInfo: null,
     offerings: null,
-    isReady: false
+    isReady: false,
+    purchases: null
 })
 
 export function RevenueCatProvider({ children }: { children: React.ReactNode }) {
@@ -21,6 +23,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
     const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null)
     const [offerings, setOfferings] = useState<Offerings | null>(null)
     const [isReady, setIsReady] = useState(false)
+    const [purchasesInstance, setPurchasesInstance] = useState<any | null>(null)
 
     useEffect(() => {
         if (!isAuthLoaded) return
@@ -43,6 +46,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
                     apiKey,
                     appUserId
                 })
+                setPurchasesInstance(purchases)
 
                 // @ts-ignore
                 const [info, offeringsData] = await Promise.all([
@@ -82,7 +86,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
     }, [user?.id, isAuthLoaded])
 
     return (
-        <RevenueCatContext.Provider value={{ customerInfo, offerings, isReady }}>
+        <RevenueCatContext.Provider value={{ customerInfo, offerings, isReady, purchases: purchasesInstance }}>
             {children}
         </RevenueCatContext.Provider>
     )
