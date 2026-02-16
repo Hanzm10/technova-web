@@ -1,65 +1,91 @@
 'use client'
 
-import Link from 'next/link'
-import { SignInButton, UserButton, useUser } from '@clerk/nextjs'
-import { ShoppingCart } from 'lucide-react'
-import { useRevenueCat } from '@/components/providers/RevenueCatProvider'
-import { Button } from '@/components/ui/button' // Will use shadcn button if created, else fallback to standard button temporarily if import fails? No, better use standard if unsure.
+import React, { useState, useEffect } from 'react';
+import { ShoppingBag, Menu, X, Search } from 'lucide-react';
+import { LegacyButton } from '@/components/ui/legacy-button';
+import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
+import Link from 'next/link';
 
-// Fallback Button if Shadcn failed (for TDD speed, refactor later)
-function FallbackButton({ children, className, ...props }: any) {
-    return <button className={className} {...props}>{children}</button>
-}
+export const Navbar: React.FC = () => {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { isSignedIn } = useUser();
 
-export function Navbar() {
-    const { isSignedIn } = useUser()
-    // const { customerInfo } = useRevenueCat() // Not used in display logic yet, but good for future
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center pl-4 pr-4">
-                {/* Logo */}
-                <div className="mr-4 hidden md:flex">
-                    <Link href="/" className="mr-6 flex items-center space-x-2">
-                        <span className="hidden font-bold sm:inline-block text-xl">TechNova</span>
-                    </Link>
-                    {/* Desktop Nav */}
-                    <nav className="flex items-center space-x-6 text-sm font-medium">
-                        <Link href="/catalog" className="transition-colors hover:text-foreground/80 text-foreground/60">
-                            Catalog
-                        </Link>
-                        <Link href="/about" className="transition-colors hover:text-foreground/80 text-foreground/60">
-                            About
-                        </Link>
-                    </nav>
+        <nav
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+                ? 'bg-[#E8ECEF]/80 backdrop-blur-md py-4 border-b border-white/20'
+                : 'bg-transparent py-6'
+                }`}
+        >
+            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                {/* Left Links */}
+                <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                    <Link href="/catalog" className="hover:text-slate-900 transition-colors">SHOP</Link>
+                    <Link href="/catalog?category=electronics" className="hover:text-slate-900 transition-colors">ELECTRONICS</Link>
+                    <Link href="/catalog?category=fashion" className="hover:text-slate-900 transition-colors">FASHION</Link>
+                    <Link href="/catalog?category=home" className="hover:text-slate-900 transition-colors">HOME</Link>
                 </div>
 
-                {/* Mobile Menu Trigger & Right Actions */}
-                <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                    <div className="w-full flex-1 md:w-auto md:flex-none">
-                        {/* Search placeholder */}
+                {/* Logo */}
+                <Link href="/" className="text-2xl font-bold tracking-tighter text-slate-900 flex-shrink-0">
+                    TECHNOVA
+                </Link>
+
+                {/* Right Actions */}
+                <div className="flex items-center space-x-4">
+                    <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 mr-4">
+                        <button className="hover:text-slate-900 transition-colors"><Search size={18} /></button>
+                        <Link href="#seasonal" className="hover:text-slate-900 transition-colors">SEASONAL</Link>
                     </div>
-                    <nav className="flex items-center space-x-4">
-                        {isSignedIn ? (
-                            <>
-                                <Link href="/cart">
-                                    <Button variant="ghost" size="icon" className="h-9 w-9">
-                                        <ShoppingCart className="h-5 w-5" />
-                                        <span className="sr-only">Cart</span>
-                                    </Button>
-                                </Link>
-                                <UserButton />
-                            </>
-                        ) : (
-                            <SignInButton mode="modal">
-                                <Button variant="default" size="sm">
-                                    Sign In
-                                </Button>
-                            </SignInButton>
-                        )}
-                    </nav>
+
+                    {isSignedIn ? (
+                        <UserButton afterSignOutUrl="/" />
+                    ) : (
+                        <SignInButton mode="modal">
+                            <LegacyButton variant="primary" size="sm" className="hidden md:flex">
+                                SIGN IN / UP
+                            </LegacyButton>
+                        </SignInButton>
+                    )}
+
+                    <button className="p-2 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                        <ShoppingBag size={18} />
+                    </button>
+
+                    <button
+                        className="md:hidden p-2 text-slate-900"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
                 </div>
             </div>
-        </header>
-    )
-}
+
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+                <div className="absolute top-full left-0 right-0 bg-[#E8ECEF] border-b border-gray-200 p-6 md:hidden flex flex-col space-y-4 shadow-xl">
+                    <Link href="/catalog" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>SHOP</Link>
+                    <Link href="/catalog?category=electronics" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>ELECTRONICS</Link>
+                    <Link href="/catalog?category=fashion" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>FASHION</Link>
+                    <Link href="/catalog?category=home" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>HOME</Link>
+                    <div className="pt-4 border-t border-gray-200">
+                        {!isSignedIn && (
+                            <SignInButton mode="modal">
+                                <LegacyButton variant="primary" className="w-full">SIGN IN</LegacyButton>
+                            </SignInButton>
+                        )}
+                    </div>
+                </div>
+            )}
+        </nav>
+    );
+};

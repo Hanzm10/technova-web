@@ -6,14 +6,15 @@
     - [x] Setup Supabase Project & Clerk Integration (SDKs installed, clients created)
     - [x] Sync Clerk Users to Supabase (Pending webhook implementation in Phase 2)
 
-- [ ] Phase 2: Core Architecture <!-- id: 2 -->
+- [x] Phase 2: Core Architecture <!-- id: 2 -->
     - [x] Implement Layouts (Navbar, Footer, Sidebar)
     - [x] Build Design System Components (Buttons, Cards, Inputs)
-    - [ ] Setup Database Schema (Products, Orders)
+    - [x] Setup Database Schema (Products, Orders)
 
 - [ ] Phase 3: Product & Public UI <!-- id: 3 -->
-    - [ ] Landing Page Implementation (Port from legacy if applicable)
-    - [ ] Product Catalog Page
+    - [x] Landing Page Implementation (Hero Section) <!-- id: 3a -->
+    - [x] Landing Page Implementation (Features/Pricing) <!-- id: 3b -->
+    - [x] Product Catalog Page
     - [ ] Product Details Page
     - [ ] Shopping Cart Logic
 
