@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { createOrder } from '@/app/actions/order'
+import { useRouter } from 'next/navigation'
 import { useRevenueCat } from '@/components/providers/RevenueCatProvider'
 import { useCartStore } from '@/hooks/useCartStore'
+import { Package } from '@revenuecat/purchases-js'
 
 /**
  * Hook to handle the checkout process via RevenueCat.
@@ -10,6 +13,7 @@ export function useCheckout() {
     const { items, clearCart } = useCartStore()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const router = useRouter()
 
     const handleCheckout = async () => {
         if (!isReady || !purchases || items.length === 0) {
@@ -34,9 +38,10 @@ export function useCheckout() {
 
             // Find an offering that matches the product name or id
             // This is a simplified mapping for the demo
+
             const offering = offerings.current || Object.values(offerings.all)[0]
             const pkg = offering.availablePackages.find(
-                (p: any) => (p.rcBillingProduct?.identifier === firstItem.id) || (p.identifier === firstItem.id)
+                (p: Package) => (p.rcBillingProduct?.identifier === firstItem.id) || (p.identifier === firstItem.id)
             ) || offering.availablePackages[0]
 
             if (!pkg) {
@@ -45,12 +50,31 @@ export function useCheckout() {
 
             console.log('Initiating purchase for:', pkg.rcBillingProduct?.identifier || pkg.identifier)
 
-            // @ts-ignore
             await purchases.purchasePackage(pkg)
 
-            // Success! (In a real app, successful purchase would redirect via Stripe)
-            // If we get back here, the purchase flow finished.
-            clearCart()
+            // Purchase successful in RevenueCat
+            // Now record the order in our database
+            try {
+                const result = await createOrder({
+                    items: items.map(item => ({
+                        id: item.id,
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    totalPrice: items.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+                })
+
+                if (result.success) {
+                    clearCart()
+                    router.push('/checkout/success')
+                } else {
+                    throw new Error('Failed to record order')
+                }
+            } catch (orderError: any) {
+                console.error('Order recording failed:', orderError)
+                setError('Purchase successful, but failed to record order. Please contact support.')
+                // Ideally trigger a manual retry or support alert here
+            }
 
         } catch (e: any) {
             console.error('Checkout error:', e)
