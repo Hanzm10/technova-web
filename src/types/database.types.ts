@@ -75,6 +75,27 @@ export interface Database {
                 }
                 Relationships: []
             }
+            profiles: {
+                Row: {
+                    created_at: string
+                    email: string
+                    id: string
+                    role: 'admin' | 'customer'
+                }
+                Insert: {
+                    created_at?: string
+                    email: string
+                    id: string
+                    role?: 'admin' | 'customer'
+                }
+                Update: {
+                    created_at?: string
+                    email?: string
+                    id?: string
+                    role?: 'admin' | 'customer'
+                }
+                Relationships: []
+            }
             products: {
                 Row: {
                     category: string

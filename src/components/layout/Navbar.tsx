@@ -8,7 +8,11 @@ import Link from 'next/link';
 import { useCartStore } from '@/hooks/useCartStore';
 import { CartDrawer } from '@/components/catalog/CartDrawer';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+    isAdmin?: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -49,6 +53,11 @@ export const Navbar: React.FC = () => {
                     {/* Right Actions */}
                     <div className="flex items-center space-x-4">
                         <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 mr-4">
+                            {isAdmin && (
+                                <Link href="/dashboard" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+                                    DASHBOARD
+                                </Link>
+                            )}
                             <button className="hover:text-slate-900 transition-colors"><Search size={18} /></button>
                             <Link href="#seasonal" className="hover:text-slate-900 transition-colors">SEASONAL</Link>
                         </div>
@@ -91,6 +100,9 @@ export const Navbar: React.FC = () => {
                         <Link href="/catalog?category=electronics" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>ELECTRONICS</Link>
                         <Link href="/catalog?category=fashion" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>FASHION</Link>
                         <Link href="/catalog?category=home" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>HOME</Link>
+                        {isAdmin && (
+                            <Link href="/dashboard" className="text-lg font-medium text-primary" onClick={() => setIsMobileMenuOpen(false)}>DASHBOARD</Link>
+                        )}
                         <div className="pt-4 border-t border-gray-200">
                             {!isSignedIn && (
                                 <SignInButton mode="modal">
