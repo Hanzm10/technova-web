@@ -5,8 +5,29 @@ import { ShoppingBag, Menu, X, Search } from 'lucide-react';
 import { LegacyButton } from '@/components/ui/legacy-button';
 import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/hooks/useCartStore';
 import { CartDrawer } from '@/components/catalog/CartDrawer';
+import { cn } from '@/lib/utils';
+
+const NavLink = ({ href, label, currentPath, searchParam }: { href: string, label: string, currentPath: string, searchParam?: string }) => {
+    const searchParams = useSearchParams();
+    const isActive = searchParam
+        ? currentPath === '/catalog' && searchParams.toString().includes(searchParam)
+        : currentPath === href;
+
+    return (
+        <Link
+            href={href}
+            className={cn(
+                "transition-all duration-300 ease-in-out hover:text-slate-900 hover:scale-105",
+                isActive ? "text-slate-900 font-bold" : "text-slate-600"
+            )}
+        >
+            {label}
+        </Link>
+    );
+};
 
 interface NavbarProps {
     isAdmin?: boolean;
@@ -19,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const { isSignedIn } = useUser();
     const { items } = useCartStore();
     const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -39,10 +61,10 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                     {/* Left Links */}
                     <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-                        <Link href="/catalog" className="hover:text-slate-900 transition-colors">SHOP</Link>
-                        <Link href="/catalog?category=electronics" className="hover:text-slate-900 transition-colors">ELECTRONICS</Link>
-                        <Link href="/catalog?category=fashion" className="hover:text-slate-900 transition-colors">FASHION</Link>
-                        <Link href="/catalog?category=home" className="hover:text-slate-900 transition-colors">HOME</Link>
+                        <NavLink href="/catalog" label="SHOP" currentPath={pathname} />
+                        <NavLink href="/catalog?category=electronics" label="ELECTRONICS" currentPath={pathname} searchParam="category=electronics" />
+                        <NavLink href="/catalog?category=fashion" label="FASHION" currentPath={pathname} searchParam="category=fashion" />
+                        <NavLink href="/catalog?category=home" label="HOME" currentPath={pathname} searchParam="category=home" />
                     </div>
 
                     {/* Logo */}
