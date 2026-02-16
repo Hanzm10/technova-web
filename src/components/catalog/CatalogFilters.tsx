@@ -27,21 +27,21 @@ export const CatalogFilters = () => {
     }
 
     return (
-        <div className="flex flex-wrap gap-4 mb-12">
+        <div className="flex flex-wrap gap-3 mb-12">
             {categories.map((cat) => (
                 <button
                     key={cat.id}
                     onClick={() => handleCategoryChange(cat.id)}
-                    className={`relative px-8 py-3 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${activeCategory === cat.id
-                        ? 'text-white'
-                        : 'text-slate-500 hover:text-slate-900 bg-white/50'
+                    className={`relative px-10 py-3.5 rounded-full text-[10px] font-extrabold tracking-[0.2em] transition-all duration-300 ${activeCategory === cat.id
+                        ? 'text-white shadow-xl shadow-slate-200'
+                        : 'text-slate-500 hover:text-slate-900 bg-white/40 backdrop-blur-md border border-white/20'
                         }`}
                 >
                     {activeCategory === cat.id && (
                         <motion.div
                             layoutId="activeCategory"
                             className="absolute inset-0 bg-slate-900 rounded-full -z-10"
-                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                            transition={{ type: 'spring', bounce: 0.15, duration: 0.6 }}
                         />
                     )}
                     {cat.name}
