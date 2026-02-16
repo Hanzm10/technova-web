@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 export const Footer: React.FC = () => {
     return (
-        <footer className="bg-slate-900 text-white pt-24 pb-12 rounded-t-[3rem] mt-12 overflow-hidden">
+        <footer className="bg-slate-900 text-white pt-16 md:pt-24 pb-12 rounded-t-[3rem] mt-12 overflow-hidden">
             <div className="container mx-auto px-6 md:px-12">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+                <div className="grid grid-cols-2 lg:grid-cols-12 gap-y-12 gap-x-8 mb-16 md:mb-20">
                     {/* Brand Column */}
-                    <div className="lg:col-span-4">
+                    <div className="col-span-2 lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
                         <h3 className="text-3xl font-bold tracking-tighter mb-6">TECHNOVA</h3>
                         <p className="text-slate-400 leading-relaxed mb-8 max-w-sm">
                             Redefining the intersection of technology and lifestyle. We curate products that enhance your daily experience through innovation and design.
@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
                     </div>
 
                     {/* Links Column 1 */}
-                    <div className="lg:col-span-2 lg:col-start-6">
+                    <div className="col-span-1 lg:col-span-2 lg:col-start-6">
                         <h4 className="font-bold mb-6 text-lg">Shop</h4>
                         <ul className="space-y-4 text-slate-400">
                             <li><Link href="#" className="hover:text-white transition-colors">New Arrivals</Link></li>
@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
                     </div>
 
                     {/* Links Column 2 */}
-                    <div className="lg:col-span-2">
+                    <div className="col-span-1 lg:col-span-2">
                         <h4 className="font-bold mb-6 text-lg">Company</h4>
                         <ul className="space-y-4 text-slate-400">
                             <li><Link href="#" className="hover:text-white transition-colors">About Us</Link></li>
@@ -47,7 +47,7 @@ export const Footer: React.FC = () => {
                     </div>
 
                     {/* Links Column 3 */}
-                    <div className="lg:col-span-2">
+                    <div className="col-span-2 md:col-span-1 lg:col-span-2">
                         <h4 className="font-bold mb-6 text-lg">Support</h4>
                         <ul className="space-y-4 text-slate-400">
                             <li><Link href="#" className="hover:text-white transition-colors">Help Center</Link></li>

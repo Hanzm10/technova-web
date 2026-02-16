@@ -6,9 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const categories = [
     { id: 'all', name: 'ALL' },
-    { id: 'electronics', name: 'ELECTRONICS' },
-    { id: 'fashion', name: 'FASHION' },
-    { id: 'home', name: 'HOME' }
+    { id: 'Gadgets', name: 'GADGETS' },
+    { id: 'Fashion', name: 'FASHION' },
+    { id: 'Home', name: 'HOME' }
 ]
 
 export const CatalogFilters = () => {
@@ -33,8 +33,8 @@ export const CatalogFilters = () => {
                     key={cat.id}
                     onClick={() => handleCategoryChange(cat.id)}
                     className={`relative px-8 py-3 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${activeCategory === cat.id
-                            ? 'text-white'
-                            : 'text-slate-500 hover:text-slate-900 bg-white/50'
+                        ? 'text-white'
+                        : 'text-slate-500 hover:text-slate-900 bg-white/50'
                         }`}
                 >
                     {activeCategory === cat.id && (

@@ -15,11 +15,12 @@
     - [x] Landing Page Implementation (Hero Section) <!-- id: 3a -->
     - [x] Landing Page Implementation (Features/Pricing) <!-- id: 3b -->
     - [x] Product Catalog Page
-    - [ ] Product Details Page
-    - [ ] Shopping Cart Logic
+    - [x] Product Details Page <!-- id: 3c -->
+    - [x] Shopping Cart Logic <!-- id: 3d -->
 
 - [ ] Phase 4: Billing & Admin <!-- id: 4 -->
     - [ ] Integrate RevenueCat Web Billing
+    - [x] Optimize Footer for Mobile <!-- id: 4a -->
     - [ ] Implement Checkout Flow
     - [ ] Build Admin Dashboard (Products/Orders Management)
 
