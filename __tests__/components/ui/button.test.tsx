@@ -1,7 +1,8 @@
 
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Button } from '@/components/ui/button'
+import '@testing-library/jest-dom'
+import { Button } from '../../../src/components/ui/button'
 
 describe('Button Component', () => {
     it('renders correctly with default props', () => {

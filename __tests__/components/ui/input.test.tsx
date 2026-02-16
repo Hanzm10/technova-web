@@ -1,7 +1,8 @@
 
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Input } from '@/components/ui/input'
+import '@testing-library/jest-dom'
+import { Input } from '../../../src/components/ui/input'
 
 describe('Input Component', () => {
     it('renders correctly', () => {

@@ -8,7 +8,7 @@
 
 - [ ] Phase 2: Core Architecture <!-- id: 2 -->
     - [x] Implement Layouts (Navbar, Footer, Sidebar)
-    - [ ] Build Design System Components (Buttons, Cards, Inputs)
+    - [x] Build Design System Components (Buttons, Cards, Inputs)
     - [ ] Setup Database Schema (Products, Orders)
 
 - [ ] Phase 3: Product & Public UI <!-- id: 3 -->

@@ -1,7 +1,8 @@
 
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import '@testing-library/jest-dom'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../../../src/components/ui/card'
 
 describe('Card Component', () => {
     it('renders all card subcomponents correctly', () => {
