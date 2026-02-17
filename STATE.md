@@ -1,19 +1,26 @@
 # Project State: TechNova Web Platform
 
 ## Current Phase
-- **Phase 5: Polish & Launch (Complete)**
+- **Phase 6: Post-Launch Enhancements (Complete)**
 
 ## Current Context
+- Favorites feature implemented and verified.
+- Auth gates for checkout and liking functional.
 - Project Deployed.
-- Performance Audit Completed.
-- Ready for Final Review.
 
 ## Recent Activity
-- Analyzed Bundle Size.
-- Verified SEO implementation.
-- Pushed to Production.
+- Implemented `favorites` table and `useFavorites` hook.
+- Integrated heart button functionality into catalog and landing page.
+- Created Favorites page UI.
+- Implemented Clerk-modal auth gates for restricted actions.
+## Recent Activity
+- Implemented `favorites` table and `useFavorites` hook.
+- Integrated heart button functionality into catalog and landing page.
+- Created Favorites page UI.
+- Implemented Clerk-modal auth gates for restricted actions.
+- Refined guest favorite flow to trigger sign-in popup.
+- Configured RevenueCat for strict e-commerce product matching (no default subscription).
 
 ## Next Steps
 - Celebrate! 🎉
-- Monitor Production Logs.
 

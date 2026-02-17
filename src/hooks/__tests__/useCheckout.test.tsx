@@ -4,6 +4,7 @@ import { useRevenueCat } from '@/components/providers/RevenueCatProvider'
 import { useCartStore } from '@/hooks/useCartStore'
 import { createOrder } from '@/app/actions/order'
 import { useRouter } from 'next/navigation'
+import { useUser, useClerk } from '@clerk/nextjs'
 
 // Mock dependencies with factory
 jest.mock('@/components/providers/RevenueCatProvider', () => ({
@@ -22,6 +23,11 @@ jest.mock('next/navigation', () => ({
     useRouter: jest.fn()
 }))
 
+jest.mock('@clerk/nextjs', () => ({
+    useUser: jest.fn(),
+    useClerk: jest.fn()
+}))
+
 describe('useCheckout', () => {
     const mockPurchasePackage = jest.fn()
     const mockClearCart = jest.fn()
@@ -29,8 +35,10 @@ describe('useCheckout', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        jest.useFakeTimers()
 
             // Default mock implementations
+            ; (mockPurchasePackage as jest.Mock).mockResolvedValue({})
             ; (useRevenueCat as unknown as jest.Mock).mockReturnValue({
                 isReady: true,
                 purchases: {
@@ -61,6 +69,15 @@ describe('useCheckout', () => {
                 push: mockPush
             })
 
+            ; (useUser as jest.Mock).mockReturnValue({
+                isSignedIn: true,
+                user: { id: 'user-123' }
+            })
+
+            ; (useClerk as jest.Mock).mockReturnValue({
+                openSignIn: jest.fn()
+            })
+
             ; (createOrder as jest.Mock).mockResolvedValue({ success: true, orderId: 'order-123' })
     })
 
@@ -71,9 +88,14 @@ describe('useCheckout', () => {
             await result.current.handleCheckout()
         })
 
+        // Advance timers to trigger the navigation
+        act(() => {
+            jest.advanceTimersByTime(500)
+        })
+
         expect(mockPurchasePackage).toHaveBeenCalled()
         expect(createOrder).toHaveBeenCalled()
-        expect(mockClearCart).toHaveBeenCalled()
+        expect(mockClearCart).toHaveBeenCalledTimes(1)
         expect(mockPush).toHaveBeenCalledWith('/checkout/success')
         expect(result.current.error).toBeNull()
         expect(result.current.isLoading).toBe(false)

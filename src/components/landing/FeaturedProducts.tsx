@@ -8,6 +8,8 @@ import { Database } from '@/types/database.types';
 import Link from 'next/link';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useToastStore } from '@/hooks/useToastStore';
+import { useFavorites } from '@/hooks/useFavorites';
+import { cn } from '@/lib/utils';
 
 type Product = Database['public']['Tables']['products']['Row'];
 
@@ -16,6 +18,7 @@ export const FeaturedProducts: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { addItem } = useCartStore();
     const { addToast } = useToastStore();
+    const { isFavorite, toggleFavorite } = useFavorites();
     const supabase = createClient();
 
     useEffect(() => {
@@ -86,11 +89,16 @@ export const FeaturedProducts: React.FC = () => {
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    // Wishlist logic
+                                                    toggleFavorite(product.id);
                                                 }}
-                                                className="p-2 rounded-full bg-card/80 backdrop-blur-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors shadow-sm"
+                                                className={cn(
+                                                    "p-2 rounded-full backdrop-blur-sm transition-colors shadow-sm",
+                                                    isFavorite(product.id)
+                                                        ? "bg-slate-900 text-white"
+                                                        : "bg-card/80 text-foreground hover:bg-primary hover:text-primary-foreground"
+                                                )}
                                             >
-                                                <Heart size={18} />
+                                                <Heart size={18} fill={isFavorite(product.id) ? "currentColor" : "none"} />
                                             </button>
                                         </div>
 

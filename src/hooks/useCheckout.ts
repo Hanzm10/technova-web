@@ -3,7 +3,9 @@ import { createOrder } from '@/app/actions/order'
 import { useRouter } from 'next/navigation'
 import { useRevenueCat } from '@/components/providers/RevenueCatProvider'
 import { useCartStore } from '@/hooks/useCartStore'
-import { Package } from '@revenuecat/purchases-js'
+import { Package, ErrorCode } from '@revenuecat/purchases-js'
+import { useToastStore } from '@/hooks/useToastStore'
+import { useUser, useClerk } from '@clerk/nextjs'
 
 /**
  * Hook to handle the checkout process via RevenueCat.
@@ -11,13 +13,24 @@ import { Package } from '@revenuecat/purchases-js'
 export function useCheckout() {
     const { purchases, offerings, isReady } = useRevenueCat()
     const { items, clearCart } = useCartStore()
+    const { addToast } = useToastStore()
+    const { isSignedIn } = useUser()
+    const { openSignIn } = useClerk()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
 
     const handleCheckout = async () => {
+        if (!isSignedIn) {
+            addToast('Please sign in to complete your checkout', 'info')
+            openSignIn()
+            return
+        }
+
         if (!isReady || !purchases || items.length === 0) {
-            setError('Checkout not ready or cart is empty')
+            const msg = 'Checkout not ready or cart is empty'
+            setError(msg)
+            addToast(msg, 'error')
             return
         }
 
@@ -40,17 +53,29 @@ export function useCheckout() {
             // This is a simplified mapping for the demo
 
             const offering = offerings.current || Object.values(offerings.all)[0]
+            // RevenueCat Web Billing identifiers do not support hyphens, so we check for
+            // sanitized versions (underscores) as well.
+            const sanitizedId = firstItem.id.replace(/-/g, '_')
+
             const pkg = offering.availablePackages.find(
-                (p: Package) => (p.rcBillingProduct?.identifier === firstItem.id) || (p.identifier === firstItem.id)
-            ) || offering.availablePackages[0]
+                (p: Package) =>
+                    (p.rcBillingProduct?.identifier === firstItem.id) ||
+                    (p.identifier === firstItem.id) ||
+                    (p.rcBillingProduct?.identifier === sanitizedId) ||
+                    (p.identifier === sanitizedId)
+            )
 
             if (!pkg) {
-                throw new Error('Product not found in RevenueCat offerings')
+                // If we can't find a matching product, throw an error instead of falling back to a default subscription.
+                console.warn(`Product not found in RevenueCat offering. Expected identifier: ${firstItem.id} OR ${sanitizedId}`)
+                throw new Error(`Product '${firstItem.name}' (ID: ${firstItem.id}) not configured in RevenueCat. Please add it to your offering with identifier: ${sanitizedId}`)
             }
 
             console.log('Initiating purchase for:', pkg.rcBillingProduct?.identifier || pkg.identifier)
 
             await purchases.purchasePackage(pkg)
+
+            console.log('Purchase successful/valid:', pkg.rcBillingProduct?.identifier || pkg.identifier)
 
             // Purchase successful in RevenueCat
             // Now record the order in our database
@@ -66,19 +91,34 @@ export function useCheckout() {
 
                 if (result.success) {
                     clearCart()
-                    router.push('/checkout/success')
+                    addToast('Order placed successfully!', 'success')
+                    // Delay navigation slightly to ensure all scripts clean up
+                    setTimeout(() => {
+                        router.push('/checkout/success')
+                    }, 500)
                 } else {
                     throw new Error('Failed to record order')
                 }
             } catch (orderError: any) {
                 console.error('Order recording failed:', orderError)
-                setError('Purchase successful, but failed to record order. Please contact support.')
+                const errorMsg = 'Purchase successful, but failed to record order. Please contact support.'
+                setError(errorMsg)
+                addToast(errorMsg, 'error')
                 // Ideally trigger a manual retry or support alert here
             }
 
         } catch (e: any) {
-            console.error('Checkout error:', e)
-            setError(e.message || 'An error occurred during checkout')
+            if (e.code === ErrorCode.UserCancelledError) {
+                // User cancelled the purchase
+                console.log('User cancelled checkout')
+                addToast('Checkout cancelled', 'info')
+                // We don't need to show an error to the user
+            } else {
+                console.error('Checkout error:', e)
+                const errorMsg = e.message || 'An error occurred during checkout'
+                setError(errorMsg)
+                addToast(errorMsg, 'error')
+            }
         } finally {
             setIsLoading(false)
         }

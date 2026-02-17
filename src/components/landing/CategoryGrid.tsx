@@ -15,8 +15,8 @@ const categories = [
         colSpan: 'md:col-span-1'
     },
     {
-        id: 'electronics',
-        title: 'ELECTRONICS',
+        id: 'gadgets',
+        title: 'GADGETS',
         description: 'Next-gen gadgets to power your workflow.',
         image: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=800',
         colSpan: 'md:col-span-1'

@@ -13,6 +13,7 @@ interface MobileMenuProps {
     isOpen: boolean
     onClose: () => void
     isAdmin?: boolean
+    isSignedIn?: boolean
 }
 
 export const MobileMenu = ({ isOpen, onClose, isAdmin }: MobileMenuProps) => {
@@ -34,6 +35,7 @@ export const MobileMenu = ({ isOpen, onClose, isAdmin }: MobileMenuProps) => {
     const menuItems = [
         { href: '/', label: 'HOME' },
         { href: '/catalog', label: 'SHOP' },
+        { href: '/favorites', label: 'FAVORITES' },
         ...(isAdmin ? [{ href: '/dashboard', label: 'DASHBOARD' }] : []),
     ]
 

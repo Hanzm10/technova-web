@@ -28,3 +28,7 @@
     - [x] SEO Optimization (Metadata, OpenGraph)
     - [x] Performance Audit
     - [x] Final QA & Deployment
+
+- [x] Phase 6: Post-Launch Enhancements <!-- id: 6 -->
+    - [x] Implement Product Favorites/Wishlist
+    - [x] Implement Auth Gates for Checkout & Liking

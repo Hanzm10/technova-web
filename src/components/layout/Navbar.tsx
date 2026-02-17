@@ -9,6 +9,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/hooks/useCartStore';
 import { CartDrawer } from '@/components/catalog/CartDrawer';
 import { MobileMenu } from './MobileMenu';
+import { SearchModal } from '@/components/search/SearchModal';
 import { cn } from '@/lib/utils';
 
 const NavLink = ({ href, label, currentPath, searchParam }: { href: string, label: string, currentPath: string, searchParam?: string }) => {
@@ -38,6 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const { isSignedIn } = useUser();
     const { items } = useCartStore();
     const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
@@ -49,6 +51,17 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        const down = (e: KeyboardEvent) => {
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                setIsSearchOpen((open) => !open);
+            }
+        };
+        document.addEventListener('keydown', down);
+        return () => document.removeEventListener('keydown', down);
     }, []);
 
     return (
@@ -69,6 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     <div className="flex items-center space-x-4">
                         <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 mr-4">
                             <NavLink href="/catalog" label="SHOP" currentPath={pathname} />
+                            <NavLink href="/favorites" label="FAVORITES" currentPath={pathname} />
                             {isAdmin && (
                                 <Link
                                     href="/dashboard"
@@ -77,7 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                                     DASHBOARD
                                 </Link>
                             )}
-                            <button className="hover:text-slate-900 transition-colors"><Search size={18} /></button>
+                            <button onClick={() => setIsSearchOpen(true)} className="hover:text-slate-900 transition-colors"><Search size={18} /></button>
                         </div>
 
                         {isSignedIn ? (
@@ -116,9 +130,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     isOpen={isMobileMenuOpen}
                     onClose={() => setIsMobileMenuOpen(false)}
                     isAdmin={isAdmin}
+                    isSignedIn={isSignedIn}
                 />
             </nav>
             <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+            <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
         </>
     );
 };

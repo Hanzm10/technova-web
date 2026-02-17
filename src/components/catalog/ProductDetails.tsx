@@ -8,6 +8,8 @@ import { Database } from '@/types/database.types'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/hooks/useCartStore'
 import { useToastStore } from '@/hooks/useToastStore'
+import { useFavorites } from '@/hooks/useFavorites'
+import { cn } from '@/lib/utils'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -19,6 +21,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
     const router = useRouter()
     const { addItem } = useCartStore()
     const { addToast } = useToastStore()
+    const { isFavorite, toggleFavorite } = useFavorites()
 
     return (
         <div className="container mx-auto px-6 py-12 md:py-24">
@@ -79,22 +82,28 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                         Engineered for high performance and designed for the modern aesthetic.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-row gap-4">
                         <Button
                             onClick={() => {
                                 addItem(product)
                                 addToast(`${product.name} added to cart`)
                             }}
-                            className="bg-slate-900 text-white hover:bg-slate-800 h-16 px-10 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold shadow-xl shadow-slate-900/10 group"
+                            className="flex-1 bg-slate-900 text-white hover:bg-slate-800 h-16 px-10 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold shadow-xl shadow-slate-900/10 group"
                         >
                             <ShoppingCart size={20} />
                             ADD TO CART
                         </Button>
                         <Button
                             variant="outline"
-                            className="border-slate-200 h-16 w-16 min-w-[4rem] rounded-2xl flex items-center justify-center text-slate-900 hover:bg-slate-50 transition-colors"
+                            onClick={() => toggleFavorite(product.id)}
+                            className={cn(
+                                "border-slate-200 h-16 w-16 min-w-[4rem] rounded-2xl flex items-center justify-center transition-all",
+                                isFavorite(product.id)
+                                    ? "bg-slate-900 text-white border-slate-900"
+                                    : "text-slate-900 hover:bg-slate-50"
+                            )}
                         >
-                            <Heart size={24} />
+                            <Heart size={24} fill={isFavorite(product.id) ? "currentColor" : "none"} />
                         </Button>
                     </div>
 

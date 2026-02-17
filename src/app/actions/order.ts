@@ -72,6 +72,7 @@ export async function createOrder(params: CreateOrderParams) {
         .from('orders')
         .insert({
             user_id: userId,
+            profile_id: userId,
             total_price: calculatedTotal,
             status: 'completed' // Assuming immediate success from RevenueCat
         })

@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { Database } from '@/types/database.types'
 import { useCartStore } from '@/hooks/useCartStore'
 import { useToastStore } from '@/hooks/useToastStore'
+import { useFavorites } from '@/hooks/useFavorites'
+import { cn } from '@/lib/utils'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -18,6 +20,7 @@ interface ProductGridProps {
 export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
     const { addItem } = useCartStore()
     const { addToast } = useToastStore()
+    const { isFavorite, toggleFavorite } = useFavorites()
 
     if (isLoading) {
         return (
@@ -63,11 +66,16 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault()
-                                            // Generic wishlist logic
+                                            toggleFavorite(product.id)
                                         }}
-                                        className="p-3 rounded-full bg-white/80 backdrop-blur-md text-slate-900 hover:bg-slate-900 hover:text-white transition-all shadow-sm flex items-center justify-center"
+                                        className={cn(
+                                            "p-3 rounded-full backdrop-blur-md transition-all shadow-sm flex items-center justify-center",
+                                            isFavorite(product.id)
+                                                ? "bg-slate-900 text-white"
+                                                : "bg-white/80 text-slate-900 hover:bg-slate-900 hover:text-white"
+                                        )}
                                     >
-                                        <Heart size={18} />
+                                        <Heart size={18} fill={isFavorite(product.id) ? "currentColor" : "none"} />
                                     </button>
                                 </div>
 

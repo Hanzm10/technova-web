@@ -20,8 +20,7 @@ export const HeroSection: React.FC = () => {
 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="mb-12 w-full"
                 >
@@ -42,8 +41,7 @@ export const HeroSection: React.FC = () => {
 
                 <motion.div
                     initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: false }}
+                    animate={{ opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
                     className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-16"
                 >
@@ -57,8 +55,7 @@ export const HeroSection: React.FC = () => {
                     {/* Central Hero Image */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 50 }}
-                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                        viewport={{ once: false }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
                         className="relative z-10"
                     >
@@ -73,8 +70,7 @@ export const HeroSection: React.FC = () => {
                         {/* Floating Card 1 */}
                         <motion.div
                             initial={{ x: -50, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            viewport={{ once: false }}
+                            animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: 0.8, duration: 0.8 }}
                             className="absolute -bottom-6 -left-2 md:bottom-12 md:left-12 bg-card/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs text-left hidden md:block border border-border/50"
                         >
@@ -91,8 +87,7 @@ export const HeroSection: React.FC = () => {
                         {/* Floating Card 2 - Video Preview */}
                         <motion.div
                             initial={{ x: 50, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            viewport={{ once: false }}
+                            animate={{ x: 0, opacity: 1 }}
                             transition={{ delay: 0.8, duration: 0.8 }}
                             className="hidden md:block absolute bottom-12 right-12 w-64 h-40 bg-black rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
                         >
