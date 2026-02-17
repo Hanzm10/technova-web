@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useToastStore } from '@/hooks/useToastStore';
 import { useFavorites } from '@/hooks/useFavorites';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 type Product = Database['public']['Tables']['products']['Row'];
@@ -79,10 +80,11 @@ export const FeaturedProducts: React.FC = () => {
                             >
                                 <Link href={`/catalog/${product.id}`}>
                                     <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-card shadow-sm border border-border cursor-pointer">
-                                        <img
+                                        <Image
                                             src={product.image}
                                             alt={product.name}
-                                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
                                         />
 
                                         <div className="absolute top-4 right-4 z-10">

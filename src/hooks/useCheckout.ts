@@ -97,22 +97,26 @@ export function useCheckout() {
                 } else {
                     throw new Error('Failed to record order')
                 }
-            } catch (orderError: any) {
-                console.error('Order recording failed:', orderError)
+            } catch (orderError) {
+                const err = orderError as Error;
+                console.error('Order recording failed:', err)
                 const errorMsg = 'Purchase successful, but failed to record order. Please contact support.'
                 setError(errorMsg)
                 addToast(errorMsg, 'error')
                 // Ideally trigger a manual retry or support alert here
             }
 
-        } catch (e: any) {
-            if (e.code === ErrorCode.UserCancelledError) {
+        } catch (e) {
+            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+            const err = e as any;
+            if (err.code === ErrorCode.UserCancelledError) {
                 // User cancelled the purchase
                 addToast('Checkout cancelled', 'info')
                 // We don't need to show an error to the user
             } else {
-                console.error('Checkout error:', e)
-                const errorMsg = e.message || 'An error occurred during checkout'
+                const errBody = e as any;
+                console.error('Checkout error:', errBody)
+                const errorMsg = errBody.message || 'An error occurred during checkout'
                 setError(errorMsg)
                 addToast(errorMsg, 'error')
             }

@@ -8,6 +8,7 @@ interface RevenueCatContextType {
     customerInfo: CustomerInfo | null
     offerings: Offerings | null
     isReady: boolean
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     purchases: any | null
 }
 
@@ -23,11 +24,12 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
     const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null)
     const [offerings, setOfferings] = useState<Offerings | null>(null)
     const [isReady, setIsReady] = useState(false)
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const [purchasesInstance, setPurchasesInstance] = useState<any | null>(null)
 
     useEffect(() => {
         if (!isAuthLoaded) return
-
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         let purchases: any = null
 
         const init = async () => {
@@ -50,8 +52,8 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
 
                 // @ts-ignore
                 const [info, offeringsData] = await Promise.all([
-                    purchases.getCustomerInfo(),
-                    purchases.getOfferings()
+                    purchases?.getCustomerInfo(),
+                    purchases?.getOfferings()
                 ])
 
                 setCustomerInfo(info)

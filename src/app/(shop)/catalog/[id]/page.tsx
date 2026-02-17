@@ -30,9 +30,10 @@ const ProductDetailsContent = () => {
 
                 if (error) throw error
                 setProduct(data)
-            } catch (err: any) {
-                console.error('Error fetching product:', err)
-                setError(err.message || 'Product not found')
+            } catch (err) {
+                const errorBody = err as Error;
+                console.error('Error fetching product:', errorBody)
+                setError(errorBody.message || 'Product not found')
             } finally {
                 setIsLoading(false)
             }

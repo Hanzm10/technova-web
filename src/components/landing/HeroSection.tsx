@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const HeroSection: React.FC = () => {
     return (
@@ -59,11 +60,13 @@ export const HeroSection: React.FC = () => {
                         transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
                         className="relative z-10"
                     >
-                        <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[3rem] shadow-2xl">
-                            <img
+                        <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[3rem] shadow-2xl relative">
+                            <Image
                                 src="https://images.unsplash.com/photo-1492446845049-9c50cc313f00?auto=format&fit=crop&q=80&w=1600"
                                 alt="Hero Showcase"
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 transform hover:scale-105"
+                                fill
+                                priority
+                                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 transform hover:scale-105"
                             />
                         </div>
 
@@ -75,9 +78,15 @@ export const HeroSection: React.FC = () => {
                             className="absolute -bottom-6 -left-2 md:bottom-12 md:left-12 bg-card/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs text-left hidden md:block border border-border/50"
                         >
                             <div className="flex -space-x-2 mb-4">
-                                <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+1&background=random" alt="User" />
-                                <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+2&background=random" alt="User" />
-                                <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+3&background=random" alt="User" />
+                                <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+1&background=random" alt="User 1" />
+                                </div>
+                                <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+2&background=random" alt="User 2" />
+                                </div>
+                                <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+3&background=random" alt="User 3" />
+                                </div>
                             </div>
                             <p className="text-sm font-medium text-foreground">
                                 Join 10k+ innovators upgrading their daily essentials.
@@ -91,7 +100,12 @@ export const HeroSection: React.FC = () => {
                             transition={{ delay: 0.8, duration: 0.8 }}
                             className="hidden md:block absolute bottom-12 right-12 w-64 h-40 bg-black rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
                         >
-                            <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500" alt="Video" />
+                            <Image
+                                fill
+                                src="https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&q=80&w=400"
+                                className="object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500"
+                                alt="Video Preview"
+                            />
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/50 group-hover:scale-110 transition-transform duration-300">
                                     <Play fill="white" className="text-white ml-1" size={20} />

@@ -4,6 +4,7 @@ import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, ChevronRight, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Database } from '@/types/database.types'
 import { useCartStore } from '@/hooks/useCartStore'
 import { useToastStore } from '@/hooks/useToastStore'
@@ -56,10 +57,11 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                     >
                         <Link href={`/catalog/${product.id}`}>
                             <div className="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-white shadow-sm border border-slate-100 cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200">
-                                <img
+                                <Image
                                     src={product.image}
                                     alt={product.name}
-                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
 
                                 <div className="absolute top-6 right-6 z-10">

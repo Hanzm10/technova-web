@@ -4,6 +4,7 @@ import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import { useEffect } from 'react'
+import Image from 'next/image'
 import { useCartStore } from '@/hooks/useCartStore'
 import { Button } from '@/components/ui/button'
 import { useCheckout } from '@/hooks/useCheckout'
@@ -77,11 +78,12 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                             ) : (
                                 items.map((item) => (
                                     <div key={item.id} className="flex gap-4 group">
-                                        <div className="h-24 w-20 shrink-0 overflow-hidden rounded-2xl bg-slate-50 border border-slate-100">
-                                            <img
+                                        <div className="h-24 w-20 shrink-0 overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 relative">
+                                            <Image
+                                                fill
                                                 src={item.image}
                                                 alt={item.name}
-                                                className="h-full w-full object-cover"
+                                                className="object-cover"
                                             />
                                         </div>
                                         <div className="flex-1 flex flex-col justify-between py-1">

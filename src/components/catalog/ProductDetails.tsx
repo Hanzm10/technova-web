@@ -4,6 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ShoppingCart, Heart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Database } from '@/types/database.types'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/hooks/useCartStore'
@@ -41,10 +42,12 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                     transition={{ duration: 0.6 }}
                     className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[3rem] bg-white shadow-2xl border border-slate-100"
                 >
-                    <img
+                    <Image
                         src={product.image}
                         alt={product.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        priority
+                        className="object-cover"
                     />
                     {product.tag && (
                         <div className="absolute top-8 left-8">

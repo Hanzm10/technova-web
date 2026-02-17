@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Command } from 'cmdk';
 import { Search, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/client';
 import { Database } from '@/types/database.types';
 
@@ -105,8 +106,13 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                                 >
                                     <div className="flex items-center gap-4 w-full">
                                         {product.image && (
-                                            <div className="h-10 w-10 rounded-md overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0">
-                                                <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                                            <div className="h-10 w-10 rounded-md overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0 relative">
+                                                <Image
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    fill
+                                                    className="object-cover"
+                                                />
                                             </div>
                                         )}
                                         <div className="flex flex-col flex-grow">
