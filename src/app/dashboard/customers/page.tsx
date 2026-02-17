@@ -1,15 +1,9 @@
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createClerkSupabaseClient } from "@/utils/supabase/server"
 import { clerkClient } from "@clerk/nextjs/server"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
 
 export default async function CustomersPage() {
     const supabase = await createClerkSupabaseClient()
@@ -19,62 +13,94 @@ export default async function CustomersPage() {
         .order('created_at', { ascending: false })
 
     const client = await clerkClient()
-    const enrichedProfiles = await Promise.all((profiles || []).map(async (profile) => {
+    const users = await Promise.all((profiles || []).map(async (profile: any) => {
         try {
             const user = await client.users.getUser(profile.id)
             return {
                 ...profile,
                 name: `${user.firstName} ${user.lastName}`.trim() || user.username || 'Anonymous',
-                avatar: user.imageUrl
+                image_url: user.imageUrl,
+                email: profile.email
             }
         } catch (e) {
-            return { ...profile, name: 'Unknown User' }
+            return { ...profile, name: 'Unknown User', image_url: '', email: profile.email }
         }
     }))
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
-                <p className="text-muted-foreground">Manage your registered users and their session data.</p>
+        <div className="space-y-8">
+            <div className="flex flex-col gap-2">
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">Customer Core</h1>
+                <p className="text-slate-500 font-medium tracking-tight">Managing your global user ecosystem.</p>
             </div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>All Customers</CardTitle>
+            <Card className="border-none bg-white/70 backdrop-blur-2xl rounded-[3rem] shadow-2xl shadow-slate-200/50 p-4 md:p-8 border border-white/40">
+                <CardHeader className="px-2 pb-8">
+                    <CardTitle className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Identity Directory</CardTitle>
+                    <CardDescription className="text-slate-500 font-medium">Browse and manage active customer profiles.</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Role</TableHead>
-                                <TableHead className="text-right">Joined</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {enrichedProfiles.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell className="font-medium">
-                                        <div className="flex items-center gap-3">
-                                            <img src={user.avatar} alt="" className="w-8 h-8 rounded-full border bg-muted" />
-                                            {user.name}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                                            {user.role}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        {new Date(user.created_at).toLocaleDateString()}
-                                    </TableCell>
+                <CardContent className="px-0">
+                    {/* Desktop View */}
+                    <div className="hidden md:block overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="hover:bg-transparent border-slate-100/50">
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Customer</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Email</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Role</TableHead>
+                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Joined</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {users.map((user: any) => (
+                                    <TableRow key={user.id} className="hover:bg-slate-50/50 border-slate-50/50 transition-colors">
+                                        <TableCell>
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-10 w-10 border-2 border-white shadow-sm rounded-full overflow-hidden bg-slate-100 flex items-center justify-center">
+                                                    {user.image_url ? (
+                                                        <img src={user.image_url} alt="" className="h-full w-full object-cover" />
+                                                    ) : (
+                                                        <span className="text-slate-900 font-black text-xs">{user.name?.charAt(0) || 'U'}</span>
+                                                    )}
+                                                </div>
+                                                <span className="font-bold text-slate-900">{user.name}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-slate-500 font-medium">{user.email}</TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline" className="rounded-full bg-white text-slate-900 border-slate-200 px-3 font-bold text-[10px] uppercase tracking-wider shadow-sm">
+                                                {user.role}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right text-slate-400 font-mono text-[10px]">
+                                            {new Date(user.created_at).toLocaleDateString()}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+
+                    {/* Mobile View */}
+                    <div className="md:hidden space-y-4 px-2">
+                        {users.map((user: any) => (
+                            <DashboardMobileCard
+                                key={user.id}
+                                title={user.name}
+                                subtitle={user.email}
+                                status={
+                                    <Badge variant="outline" className="rounded-full bg-white text-slate-900 border-slate-200 px-2 py-0 font-bold text-[9px] uppercase tracking-tight shadow-sm">
+                                        {user.role}
+                                    </Badge>
+                                }
+                            >
+                                <DashboardMobileCardItem label="Role" value={user.role} />
+                                <DashboardMobileCardItem label="Joined" value={new Date(user.created_at).toLocaleDateString()} />
+                                <DashboardMobileCardItem label="Email" value={user.email} />
+                                <DashboardMobileCardItem label="User ID" value={user.id.slice(0, 12) + '...'} />
+                            </DashboardMobileCard>
+                        ))}
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Database } from '@/types/database.types'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/hooks/useCartStore'
+import { useToastStore } from '@/hooks/useToastStore'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -17,6 +18,7 @@ interface ProductDetailsProps {
 export const ProductDetails = ({ product }: ProductDetailsProps) => {
     const router = useRouter()
     const { addItem } = useCartStore()
+    const { addToast } = useToastStore()
 
     return (
         <div className="container mx-auto px-6 py-12 md:py-24">
@@ -79,7 +81,10 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Button
-                            onClick={() => addItem(product)}
+                            onClick={() => {
+                                addItem(product)
+                                addToast(`${product.name} added to cart`)
+                            }}
                             className="bg-slate-900 text-white hover:bg-slate-800 h-16 px-10 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold shadow-xl shadow-slate-900/10 group"
                         >
                             <ShoppingCart size={20} />

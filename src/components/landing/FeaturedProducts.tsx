@@ -7,6 +7,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Database } from '@/types/database.types';
 import Link from 'next/link';
 import { useCartStore } from '@/hooks/useCartStore';
+import { useToastStore } from '@/hooks/useToastStore';
 
 type Product = Database['public']['Tables']['products']['Row'];
 
@@ -14,6 +15,7 @@ export const FeaturedProducts: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { addItem } = useCartStore();
+    const { addToast } = useToastStore();
     const supabase = createClient();
 
     useEffect(() => {
@@ -111,6 +113,7 @@ export const FeaturedProducts: React.FC = () => {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         addItem(product);
+                                                        addToast(`${product.name} added to bag`);
                                                     }}
                                                     className="p-2 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-colors"
                                                 >

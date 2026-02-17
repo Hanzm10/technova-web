@@ -1,61 +1,124 @@
 import { createClerkSupabaseClient as createClient } from '@/utils/supabase/server'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
+import { createClerkSupabaseClient } from "@/utils/supabase/server"
 
 export default async function OrdersPage() {
-    const supabase = await createClient()
+    const supabase = await createClerkSupabaseClient()
     const { data: orders } = await supabase
         .from('orders')
-        .select('*')
+        .select(`
+            *,
+            order_items (
+                quantity,
+                products (
+                    name
+                )
+            )
+        `)
         .order('created_at', { ascending: false })
 
+    const displayOrders = (orders || []).map((order: any) => {
+        const items = order.order_items || []
+        const productNames = items.map((item: any) => item.products?.name).filter(Boolean)
+
+        let displayProduct = 'Sample Product'
+        if (productNames.length > 0) {
+            displayProduct = productNames[0]
+            if (productNames.length > 1) {
+                displayProduct += ` + ${productNames.length - 1} more`
+            }
+        }
+
+        return {
+            ...order,
+            productName: displayProduct
+        }
+    })
+
     return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+        <div className="space-y-8">
+            <div className="flex flex-col gap-2">
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">Order Stream</h1>
+                <p className="text-slate-500 font-medium tracking-tight">Real-time log of all customer transactions.</p>
             </div>
 
-            <div className="rounded-md border bg-card">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Order ID</TableHead>
-                            <TableHead>User ID</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Total</TableHead>
-                            <TableHead className="text-right">Date</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {orders?.map((order) => (
-                            <TableRow key={order.id}>
-                                <TableCell className="font-medium truncate max-w-[100px]">{order.id}</TableCell>
-                                <TableCell className="truncate max-w-[100px]">{order.user_id}</TableCell>
-                                <TableCell>{order.status}</TableCell>
-                                <TableCell className="text-right">
-                                    ${order.total_price.toFixed(2)}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A'}
-                                </TableCell>
-                            </TableRow>
+            <Card className="border-none bg-white/70 backdrop-blur-2xl rounded-[3rem] shadow-2xl shadow-slate-200/50 p-4 md:p-8 border border-white/40">
+                <CardHeader className="px-2 pb-8">
+                    <CardTitle className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Transaction Registry</CardTitle>
+                    <CardDescription className="text-slate-500 font-medium">Review and manage recent purchase orders.</CardDescription>
+                </CardHeader>
+                <CardContent className="px-0">
+                    {/* Desktop View */}
+                    <div className="hidden md:block overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="hover:bg-transparent border-slate-100/50">
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Order ID</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Product</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Status</TableHead>
+                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Total</TableHead>
+                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Date</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {displayOrders.map((order: any) => (
+                                    <TableRow key={order.id} className="hover:bg-slate-50/50 border-slate-50/50 transition-colors">
+                                        <TableCell className="font-mono text-xs font-bold text-slate-400">{order.id.slice(0, 8)}...</TableCell>
+                                        <TableCell className="font-bold text-slate-900">{order.productName}</TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline" className="rounded-full bg-slate-900 text-white border-none px-3 font-bold text-[10px] uppercase tracking-wider">
+                                                {order.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right font-black text-slate-900">
+                                            ${order.total_price.toFixed(2)}
+                                        </TableCell>
+                                        <TableCell className="text-right text-slate-500 font-medium">
+                                            {new Date(order.created_at).toLocaleDateString()}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                                {displayOrders.length === 0 && (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="h-32 text-center text-slate-400 font-medium italic">
+                                            No orders found.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+
+                    {/* Mobile View */}
+                    <div className="md:hidden space-y-4 px-2">
+                        {displayOrders.map((order: any) => (
+                            <DashboardMobileCard
+                                key={order.id}
+                                title={order.productName}
+                                subtitle={`Order #${order.id.slice(0, 8)}`}
+                                status={
+                                    <Badge variant="outline" className="rounded-full bg-slate-900 text-white border-none px-2 py-0 font-bold text-[9px] uppercase tracking-tight">
+                                        {order.status}
+                                    </Badge>
+                                }
+                            >
+                                <DashboardMobileCardItem label="Total Price" value={`$${order.total_price.toFixed(2)}`} />
+                                <DashboardMobileCardItem label="Date" value={new Date(order.created_at).toLocaleDateString()} />
+                                <DashboardMobileCardItem label="Full ID" value={order.id} />
+                                <DashboardMobileCardItem label="User ID" value={order.user_id} />
+                            </DashboardMobileCard>
                         ))}
-                        {(!orders || orders.length === 0) && (
-                            <TableRow>
-                                <TableCell colSpan={5} className="h-24 text-center">
-                                    No orders found.
-                                </TableCell>
-                            </TableRow>
+                        {displayOrders.length === 0 && (
+                            <div className="py-20 text-center text-slate-400 font-medium italic">
+                                No orders found.
+                            </div>
                         )}
-                    </TableBody>
-                </Table>
-            </div>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     )
 }

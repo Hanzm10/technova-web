@@ -6,6 +6,7 @@ import { Heart, ChevronRight, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import { Database } from '@/types/database.types'
 import { useCartStore } from '@/hooks/useCartStore'
+import { useToastStore } from '@/hooks/useToastStore'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -16,6 +17,7 @@ interface ProductGridProps {
 
 export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
     const { addItem } = useCartStore()
+    const { addToast } = useToastStore()
 
     if (isLoading) {
         return (
@@ -90,6 +92,7 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                                                 onClick={(e) => {
                                                     e.preventDefault()
                                                     addItem(product)
+                                                    addToast(`${product.name} added to cart`)
                                                 }}
                                                 className="p-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200"
                                                 aria-label="Add to cart"
