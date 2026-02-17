@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/hooks/useCartStore';
 import { CartDrawer } from '@/components/catalog/CartDrawer';
+import { MobileMenu } from './MobileMenu';
 import { cn } from '@/lib/utils';
 
 const NavLink = ({ href, label, currentPath, searchParam }: { href: string, label: string, currentPath: string, searchParam?: string }) => {
@@ -58,12 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     : 'bg-transparent py-6'
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    {/* Left Links */}
-                    <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-                        <NavLink href="/catalog" label="SHOP" currentPath={pathname} />
-                    </div>
-
+                <div className="max-w-8xl mx-auto px-6 flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="text-2xl font-bold tracking-tighter text-slate-900 flex-shrink-0">
                         TECHNOVA
@@ -72,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     {/* Right Actions */}
                     <div className="flex items-center space-x-4">
                         <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 mr-4">
+                            <NavLink href="/catalog" label="SHOP" currentPath={pathname} />
                             {isAdmin && (
                                 <Link
                                     href="/dashboard"
@@ -115,21 +112,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                 </div>
 
                 {/* Mobile Menu */}
-                {isMobileMenuOpen && (
-                    <div className="absolute top-full left-0 right-0 bg-[#E8ECEF] border-b border-gray-200 p-6 md:hidden flex flex-col space-y-4 shadow-xl">
-                        <Link href="/catalog" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>SHOP</Link>
-                        {isAdmin && (
-                            <Link href="/dashboard" className="text-lg font-medium text-primary" onClick={() => setIsMobileMenuOpen(false)}>DASHBOARD</Link>
-                        )}
-                        <div className="pt-4 border-t border-gray-200">
-                            {!isSignedIn && (
-                                <SignInButton mode="modal">
-                                    <Button className="w-full rounded-full">SIGN IN</Button>
-                                </SignInButton>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <MobileMenu
+                    isOpen={isMobileMenuOpen}
+                    onClose={() => setIsMobileMenuOpen(false)}
+                    isAdmin={isAdmin}
+                />
             </nav>
             <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </>

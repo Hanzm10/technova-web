@@ -77,3 +77,9 @@
     color: hsl(var(--foreground));
   }
 }
+
+@layer utilities {
+  .bg-technova-primary {
+    background-color: #0f172a;
+  }
+}

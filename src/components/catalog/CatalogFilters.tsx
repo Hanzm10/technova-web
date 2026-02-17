@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const categories = [
     { id: 'all', name: 'ALL' },
-    { id: 'electronics', name: 'ELECTRONICS' },
+    { id: 'gadgets', name: 'GADGETS' },
     { id: 'fashion', name: 'FASHION' },
     { id: 'home', name: 'HOME' }
 ]
@@ -40,11 +40,11 @@ export const CatalogFilters = () => {
                     {activeCategory === cat.id && (
                         <motion.div
                             layoutId="activeCategory"
-                            className="absolute inset-0 bg-slate-900 rounded-full -z-10"
+                            className="absolute inset-0 bg-technova-primary rounded-full"
                             transition={{ type: 'spring', bounce: 0.15, duration: 0.6 }}
                         />
                     )}
-                    {cat.name}
+                    <span className="relative z-10">{cat.name}</span>
                 </button>
             ))}
         </div>

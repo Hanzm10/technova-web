@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
+import Link from 'next/link';
 
 export const HeroSection: React.FC = () => {
     return (
@@ -46,7 +47,9 @@ export const HeroSection: React.FC = () => {
                     transition={{ delay: 0.4, duration: 0.8 }}
                     className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-16"
                 >
-                    <Button size="lg" className="min-w-[160px] rounded-full text-lg h-14 bg-white text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">SHOP NOW</Button>
+                    <Link href="/catalog">
+                        <Button size="lg" className="min-w-[160px] rounded-full text-lg h-14 bg-white text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">SHOP NOW</Button>
+                    </Link>
 
                 </motion.div>
 
