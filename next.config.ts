@@ -11,4 +11,26 @@ const bundleAnalyzer = withBundleAnalyzer({
   analyzerMode: 'static',
 });
 
-export default bundleAnalyzer(nextConfig);
+export default bundleAnalyzer({
+  ...nextConfig,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lrdrfepuvdlocosiuqal.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+    ],
+  },
+});
