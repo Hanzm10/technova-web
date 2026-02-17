@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export const ShowcaseSection: React.FC = () => {
     return (
-        <section className="py-12 bg-[#E8ECEF] px-4">
+        <section className="py-12 bg-background px-4">
             <div className="container mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Left Card - Winter */}
@@ -14,7 +14,7 @@ export const ShowcaseSection: React.FC = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: false, amount: 0.3 }}
                         transition={{ duration: 0.8 }}
-                        className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden group bg-slate-900"
+                        className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden group bg-card"
                     >
                         <img
                             src="https://images.unsplash.com/photo-1551893478-d726eaf0442c?auto=format&fit=crop&q=80&w=800"
@@ -41,7 +41,7 @@ export const ShowcaseSection: React.FC = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: false, amount: 0.3 }}
                         transition={{ duration: 0.8 }}
-                        className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden group bg-slate-900"
+                        className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] overflow-hidden group bg-card"
                     >
                         <img
                             src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800"

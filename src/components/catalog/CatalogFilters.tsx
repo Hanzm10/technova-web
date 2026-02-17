@@ -6,9 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const categories = [
     { id: 'all', name: 'ALL' },
-    { id: 'Gadgets', name: 'GADGETS' },
-    { id: 'Fashion', name: 'FASHION' },
-    { id: 'Home', name: 'HOME' }
+    { id: 'electronics', name: 'ELECTRONICS' },
+    { id: 'fashion', name: 'FASHION' },
+    { id: 'home', name: 'HOME' }
 ]
 
 export const CatalogFilters = () => {

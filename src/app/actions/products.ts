@@ -1,10 +1,15 @@
 'use server'
 
-import { createClerkSupabaseClient } from "@/utils/supabase/server"
+import { createClerkSupabaseClient, getUserRole } from "@/utils/supabase/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 export async function addProduct(formData: FormData) {
+    const role = await getUserRole()
+    if (role !== 'admin') {
+        throw new Error('Unauthorized: Admin access required')
+    }
+
     const supabase = await createClerkSupabaseClient()
 
     const name = formData.get('name') as string

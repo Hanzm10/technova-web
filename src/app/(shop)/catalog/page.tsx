@@ -24,7 +24,7 @@ const CatalogContent = () => {
                 let query = supabase.from('products').select('*')
 
                 if (activeCategory !== 'all') {
-                    query = query.eq('category', activeCategory)
+                    query = query.ilike('category', activeCategory)
                 }
 
                 const { data, error } = await query

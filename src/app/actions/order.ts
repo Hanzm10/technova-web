@@ -23,12 +23,56 @@ export async function createOrder(params: CreateOrderParams) {
 
     const supabase = await createClerkSupabaseClient()
 
+    // 0. Validate Prices Server-Side
+    const productIds = params.items.map(item => item.id)
+    const { data: products, error: productsError } = await supabase
+        .from('products')
+        .select('id, price')
+        .in('id', productIds)
+
+    if (productsError || !products) {
+        throw new Error(`Failed to validate products: ${productsError?.message}`)
+    }
+
+    // Create a map for quick price lookup
+    const priceMap = new Map(products.map(p => [p.id, p.price]))
+
+    // Recalculate total price and validate items exist
+    let calculatedTotal = 0
+    const validatedItems = []
+
+    for (const item of params.items) {
+        const dbPrice = priceMap.get(item.id)
+
+        if (dbPrice === undefined) {
+            throw new Error(`Product not found: ${item.id}`)
+        }
+
+        // Optional: Ensure the price hasn't changed significantly or matches expected logic
+        // For now, we trust the DB price as the source of truth
+        calculatedTotal += dbPrice * item.quantity
+
+        validatedItems.push({
+            order_id: '', // Will be set after order creation
+            product_id: item.id,
+            quantity: item.quantity,
+            price: dbPrice // Use DB price, not client price
+        })
+    }
+
+    // Verify consistency (optional, but good for noticing frontend/backend drift)
+    // allowing for small float errors
+    if (Math.abs(calculatedTotal - params.totalPrice) > 0.01) {
+        console.warn(`Price mismatch detected. Client: ${params.totalPrice}, Server: ${calculatedTotal}`)
+        // We could throw here, but for now let's just use the server calculated total
+    }
+
     // 1. Create Order
     const { data: orderData, error: orderError } = await supabase
         .from('orders')
         .insert({
             user_id: userId,
-            total_price: params.totalPrice,
+            total_price: calculatedTotal,
             status: 'completed' // Assuming immediate success from RevenueCat
         })
         .select()
@@ -41,16 +85,14 @@ export async function createOrder(params: CreateOrderParams) {
     const orderId = orderData.id
 
     // 2. Create Order Items
-    const orderItems = params.items.map(item => ({
-        order_id: orderId,
-        product_id: item.id,
-        quantity: item.quantity,
-        price: item.price
+    const finalOrderItems = validatedItems.map(item => ({
+        ...item,
+        order_id: orderId
     }))
 
     const { error: itemsError } = await supabase
         .from('order_items')
-        .insert(orderItems)
+        .insert(finalOrderItems)
 
     if (itemsError) {
         console.error('Failed to create order items', itemsError)

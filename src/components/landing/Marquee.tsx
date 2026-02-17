@@ -23,10 +23,10 @@ export const Marquee: React.FC<MarqueeProps> = ({ text, direction = 'left', clas
                     duration: 20,
                 }}
             >
-                <span className="text-[10vw] md:text-[15vw] font-bold text-slate-300/50 leading-none tracking-tighter uppercase px-4">
+                <span className="text-[10vw] md:text-[15vw] font-bold text-muted/30 leading-none tracking-tighter uppercase px-4">
                     {text} &nbsp; {text} &nbsp;
                 </span>
-                <span className="text-[10vw] md:text-[15vw] font-bold text-slate-300/50 leading-none tracking-tighter uppercase px-4">
+                <span className="text-[10vw] md:text-[15vw] font-bold text-muted/30 leading-none tracking-tighter uppercase px-4">
                     {text} &nbsp; {text} &nbsp;
                 </span>
             </motion.div>

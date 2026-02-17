@@ -1,8 +1,13 @@
 'use server'
 
-import { createClerkSupabaseClient } from "@/utils/supabase/server"
+import { createClerkSupabaseClient, getUserRole } from "@/utils/supabase/server"
 
 export async function getDashboardStats() {
+    const role = await getUserRole()
+    if (role !== 'admin') {
+        throw new Error('Unauthorized: Admin access required')
+    }
+
     const supabase = await createClerkSupabaseClient()
 
     // 1. Total Revenue (all time completed orders)

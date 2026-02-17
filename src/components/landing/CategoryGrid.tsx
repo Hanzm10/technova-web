@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 import { Marquee } from './Marquee';
 
 const categories = [
@@ -56,7 +57,7 @@ const TypingReveal = () => {
     };
 
     return (
-        <p ref={ref} className="text-xl md:text-3xl font-medium leading-relaxed min-h-[120px] text-slate-900">
+        <p ref={ref} className="text-xl md:text-3xl font-medium leading-relaxed min-h-[120px] text-foreground">
             <motion.span
                 variants={container}
                 initial="hidden"
@@ -78,7 +79,7 @@ const TypingReveal = () => {
 
 export const CategoryGrid: React.FC = () => {
     return (
-        <section className="relative py-24 bg-[#E8ECEF] overflow-hidden">
+        <section className="relative py-24 bg-background overflow-hidden">
 
             {/* Background Marquee */}
             <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 z-0 opacity-10 pointer-events-none">
@@ -88,37 +89,38 @@ export const CategoryGrid: React.FC = () => {
             <div className="container mx-auto px-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {categories.map((cat, index) => (
-                        <motion.div
-                            key={cat.id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: false, amount: 0.2 }}
-                            transition={{ delay: index * 0.1, duration: 0.6 }}
-                            className={`relative group h-[600px] rounded-[2rem] overflow-hidden cursor-pointer ${cat.colSpan}`}
-                        >
-                            <img
-                                src={cat.image}
-                                alt={cat.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                        <Link href={`/catalog?category=${cat.id}`} key={cat.id} className={cat.colSpan}>
+                            <motion.div
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: false, amount: 0.2 }}
+                                transition={{ delay: index * 0.1, duration: 0.6 }}
+                                className={`relative group h-[600px] rounded-[2rem] overflow-hidden cursor-pointer w-full`}
+                            >
+                                <img
+                                    src={cat.image}
+                                    alt={cat.title}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
 
-                            <div className="absolute bottom-0 left-0 right-0 p-8">
-                                <div className="flex justify-between items-end">
-                                    <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
-                                        <h3 className="text-3xl font-bold text-white tracking-tight">{cat.title}</h3>
-                                        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                                            <div className="overflow-hidden">
-                                                <p className="text-gray-200 max-w-xs pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">{cat.description}</p>
+                                <div className="absolute bottom-0 left-0 right-0 p-8">
+                                    <div className="flex justify-between items-end">
+                                        <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                                            <h3 className="text-3xl font-bold text-white tracking-tight">{cat.title}</h3>
+                                            <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
+                                                <div className="overflow-hidden">
+                                                    <p className="text-gray-200 max-w-xs pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">{cat.description}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                        <ArrowUpRight size={24} />
+                                        <div className="w-12 h-12 rounded-full bg-background text-foreground flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                                            <ArrowUpRight size={24} />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
 
@@ -127,7 +129,7 @@ export const CategoryGrid: React.FC = () => {
                         <TypingReveal />
                     </div>
                     <div className="hidden md:block">
-                        <span className="text-9xl font-bold text-slate-200 tracking-tighter select-none">2026</span>
+                        <span className="text-9xl font-bold text-muted/30 tracking-tighter select-none">2026</span>
                     </div>
                 </div>
             </div>

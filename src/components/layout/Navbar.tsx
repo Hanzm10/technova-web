@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X, Search } from 'lucide-react';
-import { LegacyButton } from '@/components/ui/legacy-button';
+import { Button } from '@/components/ui/button';
 import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -62,9 +62,6 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     {/* Left Links */}
                     <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
                         <NavLink href="/catalog" label="SHOP" currentPath={pathname} />
-                        <NavLink href="/catalog?category=electronics" label="ELECTRONICS" currentPath={pathname} searchParam="category=electronics" />
-                        <NavLink href="/catalog?category=fashion" label="FASHION" currentPath={pathname} searchParam="category=fashion" />
-                        <NavLink href="/catalog?category=home" label="HOME" currentPath={pathname} searchParam="category=home" />
                     </div>
 
                     {/* Logo */}
@@ -76,21 +73,23 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                     <div className="flex items-center space-x-4">
                         <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 mr-4">
                             {isAdmin && (
-                                <Link href="/dashboard" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+                                <Link
+                                    href="/dashboard"
+                                    className="transition-all duration-300 ease-in-out hover:text-slate-900 hover:scale-105 text-primary font-semibold"
+                                >
                                     DASHBOARD
                                 </Link>
                             )}
                             <button className="hover:text-slate-900 transition-colors"><Search size={18} /></button>
-                            <Link href="#seasonal" className="hover:text-slate-900 transition-colors">SEASONAL</Link>
                         </div>
 
                         {isSignedIn ? (
                             <UserButton afterSignOutUrl="/" />
                         ) : (
                             <SignInButton mode="modal">
-                                <LegacyButton variant="primary" size="sm" className="hidden md:flex">
+                                <Button size="sm" className="hidden md:flex rounded-full">
                                     SIGN IN / UP
-                                </LegacyButton>
+                                </Button>
                             </SignInButton>
                         )}
 
@@ -119,16 +118,13 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
                 {isMobileMenuOpen && (
                     <div className="absolute top-full left-0 right-0 bg-[#E8ECEF] border-b border-gray-200 p-6 md:hidden flex flex-col space-y-4 shadow-xl">
                         <Link href="/catalog" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>SHOP</Link>
-                        <Link href="/catalog?category=electronics" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>ELECTRONICS</Link>
-                        <Link href="/catalog?category=fashion" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>FASHION</Link>
-                        <Link href="/catalog?category=home" className="text-lg font-medium text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>HOME</Link>
                         {isAdmin && (
                             <Link href="/dashboard" className="text-lg font-medium text-primary" onClick={() => setIsMobileMenuOpen(false)}>DASHBOARD</Link>
                         )}
                         <div className="pt-4 border-t border-gray-200">
                             {!isSignedIn && (
                                 <SignInButton mode="modal">
-                                    <LegacyButton variant="primary" className="w-full">SIGN IN</LegacyButton>
+                                    <Button className="w-full rounded-full">SIGN IN</Button>
                                 </SignInButton>
                             )}
                         </div>

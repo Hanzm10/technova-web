@@ -2,7 +2,8 @@
 
 @layer base {
   :root {
-    --background: 206 17% 92%;
+    --background: 210 20% 92%;
+    /* #E8ECEF */
     --foreground: 222.2 47.4% 11.2%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -60,6 +61,15 @@
 @layer base {
   * {
     border-color: hsl(var(--border));
+  }
+
+  button,
+  [role="button"],
+  [type="button"],
+  [type="submit"],
+  [type="reset"],
+  a {
+    cursor: pointer;
   }
 
   body {

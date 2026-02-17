@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { LegacyButton } from '@/components/ui/legacy-button';
+import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
@@ -11,8 +11,8 @@ export const HeroSection: React.FC = () => {
 
             {/* Background Gradients */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 mix-blend-multiply filter"></div>
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 mix-blend-multiply filter"></div>
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl mix-blend-multiply filter dark:mix-blend-normal dark:bg-blue-900/20"></div>
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl mix-blend-multiply filter dark:mix-blend-normal dark:bg-purple-900/20"></div>
             </div>
 
             <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
@@ -25,14 +25,14 @@ export const HeroSection: React.FC = () => {
                     className="mb-12 w-full"
                 >
                     <h1 className="flex flex-col items-center justify-center w-full max-w-full mx-auto">
-                        <span className="block text-[14vw] md:text-[16vw] font-extrabold tracking-tighter text-slate-900 leading-[0.8] select-none text-center">
+                        <span className="block text-[14vw] md:text-[16vw] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none text-center">
                             INNOVATE
                         </span>
                         <div className="flex flex-row items-center justify-center gap-2 md:gap-6 mt-2 md:mt-4 w-full flex-wrap sm:flex-nowrap">
-                            <span className="font-serif italic font-normal text-[9vw] md:text-[10vw] leading-none text-slate-500 relative top-1 md:top-2">
+                            <span className="font-serif italic font-normal text-[9vw] md:text-[10vw] leading-none text-muted-foreground relative top-1 md:top-2">
                                 your
                             </span>
-                            <span className="block text-[11vw] md:text-[13vw] font-extrabold tracking-tighter text-slate-900 leading-[0.8] select-none">
+                            <span className="block text-[11vw] md:text-[13vw] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none">
                                 LIFESTYLE
                             </span>
                         </div>
@@ -46,8 +46,8 @@ export const HeroSection: React.FC = () => {
                     transition={{ delay: 0.4, duration: 0.8 }}
                     className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-16"
                 >
-                    <LegacyButton variant="primary" size="lg" className="min-w-[160px]">SHOP NOW</LegacyButton>
-                    <LegacyButton variant="secondary" size="lg" className="min-w-[160px]">EXPLORE ALL</LegacyButton>
+                    <Button size="lg" className="min-w-[160px] rounded-full text-lg h-14 bg-white text-slate-900 hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">SHOP NOW</Button>
+
                 </motion.div>
 
                 <div className="relative w-full max-w-7xl mt-4 px-2 md:px-8">
@@ -73,14 +73,14 @@ export const HeroSection: React.FC = () => {
                             whileInView={{ x: 0, opacity: 1 }}
                             viewport={{ once: false }}
                             transition={{ delay: 0.8, duration: 0.8 }}
-                            className="absolute -bottom-6 -left-2 md:bottom-12 md:left-12 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs text-left hidden md:block"
+                            className="absolute -bottom-6 -left-2 md:bottom-12 md:left-12 bg-card/90 backdrop-blur-md p-6 rounded-2xl shadow-xl max-w-xs text-left hidden md:block border border-border/50"
                         >
                             <div className="flex -space-x-2 mb-4">
                                 <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+1&background=random" alt="User" />
                                 <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+2&background=random" alt="User" />
                                 <img className="w-10 h-10 rounded-full border-2 border-white" src="https://ui-avatars.com/api/?name=User+3&background=random" alt="User" />
                             </div>
-                            <p className="text-sm font-medium text-slate-900">
+                            <p className="text-sm font-medium text-foreground">
                                 Join 10k+ innovators upgrading their daily essentials.
                             </p>
                         </motion.div>
