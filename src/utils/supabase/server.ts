@@ -30,7 +30,6 @@ export async function createClerkSupabaseClient() {
 
 export async function getUserRole() {
     const { userId } = await auth()
-    console.log('RBAC Debug - Clerk UserID:', userId)
     if (!userId) return null
 
     const supabase = await createClerkSupabaseClient()
@@ -40,10 +39,7 @@ export async function getUserRole() {
         .eq('id', userId)
         .single()
 
-    if (error) {
-        console.error('RBAC Debug - Supabase Error:', error)
-    }
-    console.log('RBAC Debug - Profile Role:', profile?.role)
+
 
     return profile?.role || null
 }

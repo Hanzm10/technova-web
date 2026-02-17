@@ -71,11 +71,9 @@ export function useCheckout() {
                 throw new Error(`Product '${firstItem.name}' (ID: ${firstItem.id}) not configured in RevenueCat. Please add it to your offering with identifier: ${sanitizedId}`)
             }
 
-            console.log('Initiating purchase for:', pkg.rcBillingProduct?.identifier || pkg.identifier)
 
             await purchases.purchasePackage(pkg)
 
-            console.log('Purchase successful/valid:', pkg.rcBillingProduct?.identifier || pkg.identifier)
 
             // Purchase successful in RevenueCat
             // Now record the order in our database
@@ -110,7 +108,6 @@ export function useCheckout() {
         } catch (e: any) {
             if (e.code === ErrorCode.UserCancelledError) {
                 // User cancelled the purchase
-                console.log('User cancelled checkout')
                 addToast('Checkout cancelled', 'info')
                 // We don't need to show an error to the user
             } else {
