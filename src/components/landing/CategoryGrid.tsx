@@ -114,8 +114,8 @@ export const CategoryGrid: React.FC = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="w-12 h-12 rounded-full bg-background text-foreground flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                            <ArrowUpRight size={24} />
+                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                                            <ArrowUpRight className="text-white" size={24} />
                                         </div>
                                     </div>
                                 </div>

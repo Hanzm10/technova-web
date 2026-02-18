@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 export const HeroSection: React.FC = () => {
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden">
+        <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden w-full max-w-[100vw]">
 
             {/* Background Gradients */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -26,14 +26,14 @@ export const HeroSection: React.FC = () => {
                     className="mb-12 w-full"
                 >
                     <h1 className="flex flex-col items-center justify-center w-full max-w-full mx-auto">
-                        <span className="block text-[14vw] md:text-[16vw] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none text-center">
+                        <span className="block text-[14vw] md:text-[8rem] lg:text-[10rem] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none text-center">
                             INNOVATE
                         </span>
                         <div className="flex flex-row items-center justify-center gap-2 md:gap-6 mt-2 md:mt-4 w-full flex-wrap sm:flex-nowrap">
-                            <span className="font-serif italic font-normal text-[9vw] md:text-[10vw] leading-none text-muted-foreground relative top-1 md:top-2">
+                            <span className="font-serif italic font-normal text-[9vw] md:text-[5rem] lg:text-[6rem] leading-none text-muted-foreground relative top-1 md:top-2">
                                 your
                             </span>
-                            <span className="block text-[11vw] md:text-[13vw] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none">
+                            <span className="block text-[11vw] md:text-[7rem] lg:text-[8rem] font-extrabold tracking-tighter text-foreground leading-[0.8] select-none">
                                 LIFESTYLE
                             </span>
                         </div>

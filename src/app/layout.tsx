@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} font-sans antialiased text-slate-900 bg-[#E8ECEF]`}>
+      <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} font-sans antialiased text-slate-900 bg-[#E8ECEF] overflow-x-hidden`}>
         <Providers>
           {children}
         </Providers>
