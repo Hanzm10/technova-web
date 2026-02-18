@@ -1,6 +1,6 @@
 'use server'
 
-import { createClerkSupabaseClient, getUserRole } from "@/utils/supabase/server"
+import { getUserRole } from "@/utils/supabase/server"
 
 export async function getDashboardStats() {
     const role = await getUserRole()
@@ -8,7 +8,12 @@ export async function getDashboardStats() {
         throw new Error('Unauthorized: Admin access required')
     }
 
-    const supabase = await createClerkSupabaseClient()
+    // Use Service Role Key to bypass RLS for analytics
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // 1. Total Revenue (all time completed orders)
     const { data: orders } = await supabase
