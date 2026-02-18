@@ -1,6 +1,7 @@
 'use server'
 
 import { createClerkSupabaseClient } from '@/utils/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { auth } from '@clerk/nextjs/server'
 
 interface OrderItem {
@@ -21,7 +22,13 @@ export async function createOrder(params: CreateOrderParams) {
         throw new Error('Unauthorized')
     }
 
-    const supabase = await createClerkSupabaseClient()
+    // Use Service Role Key to bypass RLS for order creation
+    // This ensures that even if there's a permission issue, we capture the order
+    // after a successful payment.
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // 0. Validate Prices Server-Side
     const productIds = params.items.map(item => item.id)

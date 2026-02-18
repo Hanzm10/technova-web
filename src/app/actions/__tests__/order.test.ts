@@ -1,82 +1,106 @@
+import { createOrder } from '../order';
+import { createClient } from '@supabase/supabase-js';
+import { auth } from '@clerk/nextjs/server';
 
-import { createOrder } from '../order'
-import { createClerkSupabaseClient } from '@/utils/supabase/server'
-import { auth } from '@clerk/nextjs/server'
-
-// Mock dependencies with factory
-jest.mock('@/utils/supabase/server', () => ({
-    createClerkSupabaseClient: jest.fn()
-}))
+// Mock dependencies
+jest.mock('@supabase/supabase-js', () => ({
+    createClient: jest.fn(),
+}));
 
 jest.mock('@clerk/nextjs/server', () => ({
-    auth: jest.fn()
-}))
+    auth: jest.fn(),
+}));
 
-describe('createOrder', () => {
-    // We need to create a chainable mock object
-    const mockSelect = jest.fn()
-    const mockSingle = jest.fn()
-    const mockInsert = jest.fn()
-    const mockFrom = jest.fn()
+describe('createOrder Action', () => {
+    const mockUserId = 'user_test_123';
+    const mockProducts = [
+        { id: 'prod_1', price: 100 },
+        { id: 'prod_2', price: 50 },
+    ];
+
+    const mockSelect = jest.fn();
+    const mockInsert = jest.fn();
+    const mockIn = jest.fn();
+
+    // Need to be able to modify database responses per test
+    let currentProducts = mockProducts;
+    let currentOrderError: any = null;
 
     const mockSupabase = {
-        from: mockFrom
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-
-        // Setup the chain: from -> insert -> select -> single
-        mockFrom.mockReturnValue({ insert: mockInsert })
-        mockInsert.mockReturnValue({ select: mockSelect })
-        mockSelect.mockReturnValue({ single: mockSingle })
-        mockSingle.mockResolvedValue({ data: { id: 'order-123' }, error: null })
-
-        // Important: insert can ALSO return just a promise if select/single aren't called (for order items)
-        // Check how we use it in the implementation:
-        // 1. Order: .from('orders').insert({...}).select().single()
-        // 2. Items: .from('order_items').insert([...]) -> this returns a Thenable directly usually
-
-        // To handle both, we can make insert return an object that HAS select, but also IS valid as a result if awaited?
-        // Or better, we can customize the return based on the table name.
-
-        mockFrom.mockImplementation((table: string) => {
+        from: jest.fn().mockImplementation((table) => {
+            if (table === 'products') {
+                return {
+                    select: jest.fn().mockReturnValue({
+                        in: jest.fn().mockReturnValue({ data: currentProducts, error: null })
+                    })
+                };
+            }
             if (table === 'orders') {
                 return {
                     insert: jest.fn().mockReturnValue({
                         select: jest.fn().mockReturnValue({
-                            single: jest.fn().mockResolvedValue({ data: { id: 'order-123' }, error: null })
+                            single: jest.fn().mockReturnValue({ data: { id: 'order_123' }, error: currentOrderError })
                         })
                     })
-                }
-            } else if (table === 'order_items') {
-                return {
-                    insert: jest.fn().mockResolvedValue({ error: null })
-                }
+                };
             }
-            return { insert: jest.fn() }
-        })
+            if (table === 'order_items') {
+                return {
+                    insert: jest.fn().mockReturnValue({ error: null })
+                };
+            }
+            return {
+                select: mockSelect,
+                insert: mockInsert,
+            };
+        }),
+    };
 
-            ; (createClerkSupabaseClient as unknown as jest.Mock).mockResolvedValue(mockSupabase)
-            ; (auth as unknown as jest.Mock).mockResolvedValue({ userId: 'test-user-id' })
-    })
+    beforeEach(() => {
+        jest.clearAllMocks();
+        currentProducts = mockProducts;
+        currentOrderError = null;
+        (auth as jest.Mock).mockResolvedValue({ userId: mockUserId });
+        (createClient as jest.Mock).mockReturnValue(mockSupabase);
+        process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+        process.env.SUPABASE_SERVICE_ROLE_KEY = 'test_key';
+    });
 
     it('should create an order successfully', async () => {
-        const result = await createOrder({
-            items: [{ id: 'prod-1', quantity: 2, price: 50 }],
-            totalPrice: 100
-        })
+        const params = {
+            items: [
+                { id: 'prod_1', quantity: 1, price: 100 },
+                { id: 'prod_2', quantity: 2, price: 50 },
+            ],
+            totalPrice: 200,
+        };
 
-        expect(result.success).toBe(true)
-        expect(createClerkSupabaseClient).toHaveBeenCalled()
-        expect(mockFrom).toHaveBeenCalledWith('orders')
-        expect(mockFrom).toHaveBeenCalledWith('order_items')
-    })
+        const result = await createOrder(params);
+        expect(result.success).toBe(true);
+        expect(result.orderId).toBe('order_123');
+        // Ensure we are using the service role client
+        expect(createClient).toHaveBeenCalledWith(
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY
+        );
+    });
 
-    it('should throw error if user is not authenticated', async () => {
-        ; (auth as unknown as jest.Mock).mockResolvedValue({ userId: null })
+    it('should fail if user is not authenticated', async () => {
+        (auth as jest.Mock).mockResolvedValue({ userId: null });
+        const params = { items: [{ id: 'prod_1', quantity: 1, price: 100 }], totalPrice: 100 };
+        await expect(createOrder(params)).rejects.toThrow('Unauthorized');
+    });
 
-        await expect(createOrder({ items: [], totalPrice: 0 }))
-            .rejects.toThrow('Unauthorized')
-    })
-})
+    it('should fail if product lookup returns empty (price mismatch simulation)', async () => {
+        currentProducts = []; // Simulate no products found
+        const params = { items: [{ id: 'prod_missing', quantity: 1, price: 100 }], totalPrice: 100 };
+        // Depending on logic, might throw "Product not found" or "Failed to validate"
+        await expect(createOrder(params)).rejects.toThrow();
+    });
+
+    it('should fail if order creation errors (e.g. RLS)', async () => {
+        currentOrderError = { message: 'RLS violation' };
+        const params = { items: [{ id: 'prod_1', quantity: 1, price: 100 }], totalPrice: 100 };
+        await expect(createOrder(params)).rejects.toThrow('Failed to create order: RLS violation');
+    });
+});

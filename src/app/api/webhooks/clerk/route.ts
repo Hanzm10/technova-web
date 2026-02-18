@@ -67,7 +67,7 @@ export async function POST(req: Request) {
                 .upsert({
                     id: id,
                     email: email,
-                    role: 'user', // Default role
+                    role: 'customer', // Default role
                     // Add other fields if your profiles table has them (e.g., name, avatar_url)
                     // name: name,
                     // avatar_url: image_url

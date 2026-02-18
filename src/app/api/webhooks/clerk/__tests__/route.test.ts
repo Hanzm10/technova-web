@@ -120,7 +120,7 @@ describe('Clerk Webhook Handler', () => {
         expect(mockUpsert).toHaveBeenCalledWith({
             id: 'user_123',
             email: 'test@example.com',
-            role: 'user',
+            role: 'customer',
         });
     });
 
@@ -155,7 +155,7 @@ describe('Clerk Webhook Handler', () => {
         expect(mockUpsert).toHaveBeenCalledWith({
             id: 'user_123',
             email: 'updated@example.com',
-            role: 'user',
+            role: 'customer',
         });
     });
 
