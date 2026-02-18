@@ -1,0 +1,21 @@
+FAIL src/app/api/webhooks/clerk/__tests__/route.test.ts
+  ● Test suite failed to run
+
+    The error below may be caused by using the wrong test environment, see https://jestjs.io/docs/configuration#testenvironment-string.
+    Consider using the "jsdom" test environment.
+
+    ReferenceError: window is not defined
+
+       9 | }
+      10 |
+    > 11 | window.IntersectionObserver = IntersectionObserver;
+         | ^
+      12 |
+
+      at Object.window (jest.setup.js:11:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        0.417 s
+Ran all test suites matching src/app/api/webhooks/clerk/__tests__/route.test.ts.

@@ -8,4 +8,6 @@ class IntersectionObserver {
     disconnect() { return null; }
 }
 
-window.IntersectionObserver = IntersectionObserver;
+if (typeof window !== 'undefined') {
+    window.IntersectionObserver = IntersectionObserver;
+}
