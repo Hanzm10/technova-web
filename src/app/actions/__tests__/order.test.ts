@@ -60,7 +60,7 @@ describe('createOrder Action', () => {
         jest.clearAllMocks();
         currentProducts = mockProducts;
         currentOrderError = null;
-        (auth as jest.Mock).mockResolvedValue({ userId: mockUserId });
+        (auth as unknown as jest.Mock).mockResolvedValue({ userId: mockUserId });
         (createClient as jest.Mock).mockReturnValue(mockSupabase);
         process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
         process.env.SUPABASE_SERVICE_ROLE_KEY = 'test_key';
@@ -86,7 +86,7 @@ describe('createOrder Action', () => {
     });
 
     it('should fail if user is not authenticated', async () => {
-        (auth as jest.Mock).mockResolvedValue({ userId: null });
+        (auth as unknown as jest.Mock).mockResolvedValue({ userId: null });
         const params = { items: [{ id: 'prod_1', quantity: 1, price: 100 }], totalPrice: 100 };
         await expect(createOrder(params)).rejects.toThrow('Unauthorized');
     });

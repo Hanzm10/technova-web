@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createClerkSupabaseClient as createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
-import { PlusCircle } from 'lucide-react'
+import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
 import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
+import { DeleteProductButton } from "./components/DeleteProductButton"
+import { DeleteProductMobileButton } from "./components/DeleteProductMobileButton"
 
 export default async function ProductsPage() {
     const supabase = await createClient()
@@ -41,6 +43,7 @@ export default async function ProductsPage() {
                                     <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Product Name</TableHead>
                                     <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Category</TableHead>
                                     <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">List Price</TableHead>
+                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -57,11 +60,21 @@ export default async function ProductsPage() {
                                         <TableCell className="text-right font-black text-slate-900">
                                             ${product.price.toFixed(2)}
                                         </TableCell>
+                                        <TableCell className="text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <Button variant="ghost" size="icon" asChild className="hover:bg-slate-100 text-slate-500 hover:text-slate-900">
+                                                    <Link href={`/dashboard/products/edit/${product.id}`}>
+                                                        <Pencil className="h-4 w-4" />
+                                                    </Link>
+                                                </Button>
+                                                <DeleteProductButton id={product.id} />
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                                 {displayProducts.length === 0 && (
                                     <TableRow>
-                                        <TableCell colSpan={3} className="h-32 text-center text-slate-400 font-medium italic">
+                                        <TableCell colSpan={4} className="h-32 text-center text-slate-400 font-medium italic">
                                             No products found.
                                         </TableCell>
                                     </TableRow>
@@ -81,6 +94,16 @@ export default async function ProductsPage() {
                                     <span className="font-black text-slate-900 text-lg">
                                         ${product.price.toFixed(2)}
                                     </span>
+                                }
+                                actions={
+                                    <>
+                                        <Button variant="outline" className="flex-1 border-slate-200 text-slate-600 hover:text-slate-900 font-bold" asChild>
+                                            <Link href={`/dashboard/products/edit/${product.id}`}>
+                                                <Pencil className="mr-2 h-4 w-4" /> Edit
+                                            </Link>
+                                        </Button>
+                                        <DeleteProductMobileButton id={product.id} />
+                                    </>
                                 }
                             >
                                 <DashboardMobileCardItem label="Category" value={product.category} />

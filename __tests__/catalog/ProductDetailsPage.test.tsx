@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import ProductDetailsPage from '@/app/catalog/[id]/page'
+import ProductDetailsPage from '@/app/(shop)/catalog/[id]/page'
 import { createClient } from '@/utils/supabase/client'
 
 // Mock Supabase
@@ -34,13 +34,13 @@ jest.mock('next/navigation', () => ({
 }))
 
 describe('ProductDetailsPage', () => {
-    it('renders loading state initially', () => {
-        render(<ProductDetailsPage params={{ id: '123' }} />)
+    it('renders loading state initially', async () => {
+        render(<ProductDetailsPage />)
         expect(screen.getByText(/Loading product/i)).toBeInTheDocument()
     })
 
     it('renders product details after fetching', async () => {
-        render(<ProductDetailsPage params={{ id: '123' }} />)
+        render(<ProductDetailsPage />)
 
         await waitFor(() => {
             expect(screen.getByText('Technova Ultra Gear')).toBeInTheDocument()
@@ -61,7 +61,7 @@ describe('ProductDetailsPage', () => {
             })
         }))
 
-        render(<ProductDetailsPage params={{ id: '999' }} />)
+        render(<ProductDetailsPage />)
 
         await waitFor(() => {
             expect(screen.getByText(/Product not found/i)).toBeInTheDocument()

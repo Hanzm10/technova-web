@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useCartStore } from '@/hooks/useCartStore'
 import { Button } from '@/components/ui/button'
 import { useCheckout } from '@/hooks/useCheckout'
+import { useUser } from '@clerk/nextjs'
 
 interface CartDrawerProps {
     isOpen: boolean
@@ -15,6 +16,7 @@ interface CartDrawerProps {
 }
 
 export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
+    const { user } = useUser()
     const { items, totalPrice, updateQuantity, removeItem } = useCartStore()
     const { handleCheckout, isLoading, error } = useCheckout()
 
@@ -93,7 +95,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                                                     <p className="text-xs text-slate-400 uppercase tracking-wider mt-1">{item.category}</p>
                                                 </div>
                                                 <button
-                                                    onClick={() => removeItem(item.id)}
+                                                    onClick={() => removeItem(item.id, user?.id)}
                                                     className="text-slate-300 hover:text-red-500 transition-colors"
                                                 >
                                                     <Trash2 size={16} />
@@ -102,14 +104,14 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                                             <div className="flex justify-between items-center mt-4">
                                                 <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
                                                     <button
-                                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                        onClick={() => updateQuantity(item.id, item.quantity - 1, user?.id)}
                                                         className="text-slate-400 hover:text-slate-900 transition-colors"
                                                     >
                                                         <Minus size={14} />
                                                     </button>
                                                     <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
                                                     <button
-                                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                        onClick={() => updateQuantity(item.id, item.quantity + 1, user?.id)}
                                                         className="text-slate-400 hover:text-slate-900 transition-colors"
                                                     >
                                                         <Plus size={14} />

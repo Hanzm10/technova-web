@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import CatalogPage from '@/app/catalog/page'
+import CatalogPage from '@/app/(shop)/catalog/page'
 import { createClient } from '@/utils/supabase/client'
 import { useCartStore } from '@/hooks/useCartStore'
 

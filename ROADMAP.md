@@ -38,3 +38,9 @@
     - [x] Architectural Documentation (Librarian)
     - [x] Final Polish & Log Cleanup
 
+- [ ] Phase 8: Product CRUD & Cart Persistence <!-- id: 8 -->
+    - [x] Setup Supabase DB Schema for User Cart Syncing
+    - [x] Integrate Cart Sync Logic (Local State <-> DB based on Auth)
+    - [x] Admin: Build Product Creation UI (Form + Image Upload)
+    - [x] Admin: Build Product Edit/Delete UI
+    - [ ] Verify Admin UI aligns strictly with `ui-ux-pro-max` brand guidelines

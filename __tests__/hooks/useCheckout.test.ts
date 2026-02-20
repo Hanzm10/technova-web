@@ -39,7 +39,7 @@ describe('useCheckout', () => {
                 },
                 offerings: mockOfferings
             })
-            ; (useCartStore as jest.Mock).mockReturnValue({
+            ; (useCartStore as unknown as jest.Mock).mockReturnValue({
                 items: [{ id: 'prod_1', name: 'Product 1', price: 100, quantity: 1 }],
                 clearCart: mockClearCart
             })
@@ -61,7 +61,7 @@ describe('useCheckout', () => {
     })
 
     it('sets error when cart is empty', async () => {
-        ; (useCartStore as jest.Mock).mockReturnValue({
+        ; (useCartStore as unknown as jest.Mock).mockReturnValue({
             items: [],
             clearCart: mockClearCart
         })

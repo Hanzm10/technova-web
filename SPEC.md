@@ -26,12 +26,12 @@
 ### Public Features
 - **Hero/Landing:** Dynamic, high-impact visuals.
 - **Product Catalog:** Filterable categories (Fashion, Gadgets, Home).
-- **Cart & Checkout:** Persistent cart, Stripe integration via RevenueCat.
+- **Cart & Checkout:** Persistent cart securely synced to the authenticated user's account in the database (preventing cross-account local storage leakage), Stripe integration via RevenueCat.
 - **User Dashboard:** Order history, profile management.
 
 ### Admin Features
 - **Dashboard:** Analytics overview.
-- **Product Management:** Add/Edit/Delete items.
+- **Product Management:** Complete CRUD system (Create, Read, Update, Delete) for products, including image uploads, dynamic pricing, and categorizations in adherence to brand guidelines.
 - **User Management:** View customer data.
 - **Order Management:** Tracking and status updates.
 

@@ -10,6 +10,7 @@ interface DashboardMobileCardProps {
     subtitle?: string
     status?: React.ReactNode
     children: React.ReactNode
+    actions?: React.ReactNode
     className?: string
 }
 
@@ -18,6 +19,7 @@ export function DashboardMobileCard({
     subtitle,
     status,
     children,
+    actions,
     className
 }: DashboardMobileCardProps) {
     const [isExpanded, setIsExpanded] = useState(false)
@@ -64,6 +66,11 @@ export function DashboardMobileCard({
                             <div className="grid grid-cols-2 gap-4 pt-4">
                                 {children}
                             </div>
+                            {actions && (
+                                <div className="mt-6 flex items-center gap-2 border-t border-slate-100 pt-4">
+                                    {actions}
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 )}

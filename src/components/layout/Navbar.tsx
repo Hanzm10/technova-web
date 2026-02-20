@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
+import { SignInButton, UserButton, useUser, useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/hooks/useCartStore';
@@ -40,7 +40,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const { isSignedIn } = useUser();
+    const { isSignedIn, user } = useUser();
+    const { getToken, isLoaded, userId } = useAuth();
     const { items } = useCartStore();
     const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
     const pathname = usePathname();
@@ -63,6 +64,20 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
         document.addEventListener('keydown', down);
         return () => document.removeEventListener('keydown', down);
     }, []);
+
+    // Sync cart when auth state changes
+    useEffect(() => {
+        if (isLoaded && isSignedIn && userId) {
+            getToken({ template: 'supabase' }).then((token: string | null) => {
+                const { syncCart } = useCartStore.getState();
+                syncCart(userId, token);
+            });
+        } else if (isLoaded && isSignedIn === false) {
+            // Clear cart immediately on logout to ensure data isolation
+            const { clearCart } = useCartStore.getState();
+            clearCart();
+        }
+    }, [isLoaded, isSignedIn, userId, getToken]);
 
     return (
         <>

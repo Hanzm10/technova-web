@@ -28,7 +28,7 @@ jest.mock('@/components/layout/Sidebar', () => ({
 
 describe('Admin Layout', () => {
     it('redirects to home if no user is authenticated', async () => {
-        (auth as jest.Mock).mockReturnValue({ userId: null })
+        (auth as unknown as jest.Mock).mockReturnValue({ userId: null })
             ; (getUserRole as jest.Mock).mockResolvedValue(null)
 
         try {
@@ -39,7 +39,7 @@ describe('Admin Layout', () => {
     })
 
     it('redirects to home if user is not an admin', async () => {
-        (auth as jest.Mock).mockReturnValue({ userId: 'user_123' })
+        (auth as unknown as jest.Mock).mockReturnValue({ userId: 'user_123' })
             ; (getUserRole as jest.Mock).mockResolvedValue('customer')
 
         try {
@@ -50,7 +50,7 @@ describe('Admin Layout', () => {
     })
 
     it('renders children and sidebar when authenticated as admin', async () => {
-        (auth as jest.Mock).mockReturnValue({ userId: 'admin_123' })
+        (auth as unknown as jest.Mock).mockReturnValue({ userId: 'admin_123' })
             ; (getUserRole as jest.Mock).mockResolvedValue('admin')
 
         const component = await AdminLayout({ children: <div data-testid="child">Child Content</div> })

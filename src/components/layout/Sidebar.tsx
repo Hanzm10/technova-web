@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, ShoppingCart, Users, Settings, ChevronRight, LogOut } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Settings, ChevronRight, LogOut, Package } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { UserButton, useUser, SignOutButton } from '@clerk/nextjs'
 
 const links = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Products', href: '/dashboard/products', icon: Package },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingCart },
     { name: 'Customers', href: '/dashboard/customers', icon: Users },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },

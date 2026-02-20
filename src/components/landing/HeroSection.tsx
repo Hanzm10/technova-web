@@ -79,13 +79,13 @@ export const HeroSection: React.FC = () => {
                         >
                             <div className="flex -space-x-2 mb-4">
                                 <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
-                                    <Image fill src="https://ui-avatars.com/api/?name=User+1&background=random" alt="User 1" />
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+1&background=random" alt="User 1" unoptimized />
                                 </div>
                                 <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
-                                    <Image fill src="https://ui-avatars.com/api/?name=User+2&background=random" alt="User 2" />
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+2&background=random" alt="User 2" unoptimized />
                                 </div>
                                 <div className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden">
-                                    <Image fill src="https://ui-avatars.com/api/?name=User+3&background=random" alt="User 3" />
+                                    <Image fill src="https://ui-avatars.com/api/?name=User+3&background=random" alt="User 3" unoptimized />
                                 </div>
                             </div>
                             <p className="text-sm font-medium text-foreground">
@@ -102,7 +102,7 @@ export const HeroSection: React.FC = () => {
                         >
                             <Image
                                 fill
-                                src="https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&q=80&w=400"
+                                src="https://lrdrfepuvdlocosiuqal.supabase.co/storage/v1/object/public/product-images/hero-video-thumbnail-1771596279526.png"
                                 className="object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500"
                                 alt="Video Preview"
                             />

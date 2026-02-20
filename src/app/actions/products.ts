@@ -15,11 +15,28 @@ export async function addProduct(formData: FormData) {
     const name = formData.get('name') as string
     const price = parseFloat(formData.get('price') as string)
     const category = formData.get('category') as string
-    const image = formData.get('image') as string
+    const imageFile = formData.get('image') as File | null
 
-    if (!name || !price || !category || !image) {
+    if (!name || isNaN(price) || !category || !imageFile || imageFile.size === 0) {
         throw new Error('Missing required fields')
     }
+
+    const fileExt = imageFile.name.split('.').pop()
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+    const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, imageFile)
+
+    if (uploadError) {
+        console.error('Error uploading product image:', uploadError)
+        throw new Error('Failed to upload product image')
+    }
+
+    const { data: publicUrlData } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(fileName)
+
+    const image = publicUrlData.publicUrl
 
     const { error } = await supabase.from('products').insert({
         name,
