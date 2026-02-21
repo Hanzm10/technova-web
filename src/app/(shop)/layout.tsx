@@ -10,7 +10,7 @@ export default async function ShopLayout({
     const role = await getUserRole()
 
     return (
-        <div className="relative flex min-h-screen flex-col">
+        <div className="relative flex min-h-screen flex-col overflow-x-hidden">
             <Navbar isAdmin={role === 'admin'} />
             <main className="flex-1">{children}</main>
             <Footer />

@@ -50,11 +50,11 @@ export default function SummerCollectionPage() {
     }, [supabase]);
 
     return (
-        <div className="w-full relative overflow-x-hidden">
+        <div className="w-full relative" style={{ overflow: 'clip' }}>
             <div className="flex flex-col min-h-screen bg-[#E8ECEF] w-full relative">
                 {/* Hero Section */}
                 <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 bg-black">
+                    <div className="absolute inset-0 bg-black overflow-hidden">
                         <Image
                             src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&q=80&w=1600"
                             alt="Summer Season Collection"
@@ -94,8 +94,8 @@ export default function SummerCollectionPage() {
                 </section>
 
                 {/* Background Marquee Wrapper */}
-                <div className="absolute top-[85%] left-0 w-full h-[40vh] z-0 pointer-events-none select-none overflow-hidden" style={{ contain: 'paint' }}>
-                    <div className="w-[150%] left-[-25%] relative rotate-[2deg]">
+                <div className="absolute top-[85%] left-0 w-full h-[40vh] z-0 pointer-events-none select-none" style={{ overflow: 'clip' }}>
+                    <div className="w-full relative">
                         <Marquee text="SUMMER ESSENTIALS 2026 / COOLING INNOVATION / LIGHTWEIGHT TECH /" direction="right" />
                     </div>
                 </div>

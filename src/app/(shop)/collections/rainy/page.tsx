@@ -50,11 +50,11 @@ export default function RainyCollectionPage() {
     }, [supabase]);
 
     return (
-        <div className="w-full relative overflow-x-hidden">
+        <div className="w-full relative" style={{ overflow: 'clip' }}>
             <div className="flex flex-col min-h-screen bg-[#E8ECEF] w-full relative">
                 {/* Hero Section */}
                 <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 bg-black">
+                    <div className="absolute inset-0 bg-black overflow-hidden">
                         <Image
                             src="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&q=80&w=1600"
                             alt="Rainy Season Collection"
@@ -94,8 +94,8 @@ export default function RainyCollectionPage() {
                 </section>
 
                 {/* Background Marquee Wrapper */}
-                <div className="absolute top-[85%] left-0 w-full h-[40vh] z-0 pointer-events-none select-none overflow-hidden" style={{ contain: 'paint' }}>
-                    <div className="w-[150%] left-[-25%] relative rotate-[-2deg]">
+                <div className="absolute top-[85%] left-0 w-full h-[40vh] z-0 pointer-events-none select-none" style={{ overflow: 'clip' }}>
+                    <div className="w-full relative">
                         <Marquee text="MONSOON READY 2026 / TECHNOVA PERFORMANCE / WATERPROOF DESIGN /" />
                     </div>
                 </div>

@@ -11,7 +11,7 @@ interface MarqueeProps {
 
 export const Marquee: React.FC<MarqueeProps> = ({ text, direction = 'left', className = '' }) => {
     return (
-        <div className={`overflow-hidden whitespace-nowrap flex relative w-full ${className}`} style={{ contain: 'paint' }}>
+        <div className={`whitespace-nowrap flex relative w-full max-w-full ${className}`} style={{ overflow: 'clip' }}>
             <motion.div
                 className="flex"
                 animate={{

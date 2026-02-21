@@ -9,10 +9,10 @@ import Image from 'next/image';
 
 export const HeroSection: React.FC = () => {
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden w-full max-w-[100vw]">
+        <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden w-full max-w-full">
 
             {/* Background Gradients */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl mix-blend-multiply filter dark:mix-blend-normal dark:bg-blue-900/20"></div>
                 <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl mix-blend-multiply filter dark:mix-blend-normal dark:bg-purple-900/20"></div>
             </div>

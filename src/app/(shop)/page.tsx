@@ -12,7 +12,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-[#E8ECEF] overflow-x-hidden w-full relative">
       <HeroSection />
 
-      <div className="py-8">
+      <div className="py-8 overflow-hidden w-full">
         <Marquee text="FUTURE / STYLE / TECH / LIFE /" direction="left" />
       </div>
 
