@@ -30,9 +30,9 @@ export function DashboardMobileCard({
             isExpanded ? "shadow-xl ring-1 ring-slate-900/5 mb-4" : "mb-2",
             className
         )}>
-            <button
+            <div
+                className="w-full text-left p-5 flex items-center justify-between group cursor-pointer select-none"
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full text-left p-5 flex items-center justify-between group"
             >
                 <div className="flex items-center gap-4">
                     <div className={cn(
@@ -51,8 +51,12 @@ export function DashboardMobileCard({
                         {subtitle && <p className="text-xs font-medium text-slate-500 mt-0.5">{subtitle}</p>}
                     </div>
                 </div>
-                {status && <div className="flex-shrink-0">{status}</div>}
-            </button>
+                {status && (
+                    <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                        {status}
+                    </div>
+                )}
+            </div>
 
             <AnimatePresence>
                 {isExpanded && (

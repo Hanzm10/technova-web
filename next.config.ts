@@ -35,6 +35,11 @@ export default bundleAnalyzer({
         protocol: 'https',
         hostname: 'placehold.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+      },
     ],
+
   },
 });

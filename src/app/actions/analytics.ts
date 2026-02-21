@@ -93,14 +93,47 @@ export async function getDashboardStats() {
     const enrichedOrders = await Promise.all((latestOrders || []).map(async (order) => {
         try {
             const user = await client.users.getUser(order.user_id)
+            const firstName = user.firstName || ''
+            const lastName = user.lastName || ''
+            const fullName = `${firstName} ${lastName}`.trim()
             return {
                 ...order,
-                userName: `${user.firstName} ${user.lastName}`.trim() || user.username || 'Anonymous'
+                userName: fullName || user.username || 'Anonymous'
             }
         } catch (e) {
             return { ...order, userName: 'User Not Found' }
         }
     }))
+
+    // 6. Top Selling Products (By Revenue)
+    const { data: topProductsData } = await supabase
+        .from('order_items')
+        .select('product_id, quantity, price, products(name, category)')
+
+    const productStats = new Map()
+    topProductsData?.forEach((item: any) => {
+        const id = item.product_id
+        const current = productStats.get(id) || { name: item.products.name, category: item.products.category, revenue: 0, units: 0 }
+        current.revenue += item.price * item.quantity
+        current.units += item.quantity
+        productStats.set(id, current)
+    })
+
+    const topProducts = Array.from(productStats.values())
+        .sort((a, b) => b.revenue - a.revenue)
+        .slice(0, 5)
+
+    // 7. Revenue by Category
+    const categoryStats = new Map()
+    topProductsData?.forEach((item: any) => {
+        const cat = item.products.category
+        const current = categoryStats.get(cat) || 0
+        categoryStats.set(cat, current + (item.price * item.quantity))
+    })
+
+    const categoryRevenue = Array.from(categoryStats.entries())
+        .map(([name, value]) => ({ name, value }))
+        .sort((a, b) => b.value - a.value)
 
     return {
         totalRevenue,
@@ -109,6 +142,8 @@ export async function getDashboardStats() {
         userCount: userCount || 0,
         salesTrend,
         latestOrders: enrichedOrders,
+        topProducts,
+        categoryRevenue,
         growth: {
             revenue: revenueGrowth,
             orders: orderGrowth,

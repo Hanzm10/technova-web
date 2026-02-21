@@ -3,6 +3,8 @@ export const dynamic = 'force-dynamic'
 
 import { StatsCard } from "@/components/dashboard/StatsCard"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
+import { TopProductsTable } from "@/components/dashboard/TopProductsTable"
+import { CategoryRevenueChart } from "@/components/dashboard/CategoryRevenueChart"
 import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -94,6 +96,11 @@ export default async function DashboardPage() {
                         </div>
                     </CardContent>
                 </Card>
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-2">
+                <TopProductsTable products={stats.topProducts} />
+                <CategoryRevenueChart data={stats.categoryRevenue} />
             </div>
         </div>
     )

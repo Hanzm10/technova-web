@@ -11,6 +11,7 @@ import { useCartStore } from '@/hooks/useCartStore'
 import { useToastStore } from '@/hooks/useToastStore'
 import { useFavorites } from '@/hooks/useFavorites'
 import { cn } from '@/lib/utils'
+import { ProductImage } from '@/components/shop/ProductImage'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -35,27 +36,18 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
             </button>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {/* Product Image */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[3rem] bg-white shadow-2xl border border-slate-100"
+                    className="w-full h-full"
                 >
-                    <Image
+                    <ProductImage
                         src={product.image}
                         alt={product.name}
-                        fill
-                        priority
-                        className="object-cover"
+                        tag={product.tag}
+                        className="aspect-[4/5] md:aspect-[3/4]"
                     />
-                    {product.tag && (
-                        <div className="absolute top-8 left-8">
-                            <span className="px-4 py-2 rounded-full bg-slate-900/90 backdrop-blur-md text-xs font-bold uppercase tracking-widest text-white shadow-lg">
-                                {product.tag}
-                            </span>
-                        </div>
-                    )}
                 </motion.div>
 
                 {/* Product Info */}
