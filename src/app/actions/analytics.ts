@@ -29,26 +29,47 @@ export async function getDashboardStats() {
         .from('profiles')
         .select('*', { count: 'exact', head: true })
 
-    // 3. Sales Trend (Last 7 days)
-    const sevenDaysAgo = new Date()
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+    // 3. Sales Trend & Growth (Last 7 days vs Previous 7 days)
+    const now = new Date()
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
 
-    const { data: recentOrders } = await supabase
+    const { data: currentPeriodOrders } = await supabase
         .from('orders')
         .select('total_price, created_at')
         .gte('created_at', sevenDaysAgo.toISOString())
-        .order('created_at', { ascending: true })
 
-    // Aggregate by day
+    const { data: previousPeriodOrders } = await supabase
+        .from('orders')
+        .select('total_price, created_at')
+        .gte('created_at', fourteenDaysAgo.toISOString())
+        .lt('created_at', sevenDaysAgo.toISOString())
+
+    const currentRevenue = currentPeriodOrders?.reduce((acc, o) => acc + (o.total_price || 0), 0) || 0
+    const previousRevenue = previousPeriodOrders?.reduce((acc, o) => acc + (o.total_price || 0), 0) || 0
+    const revenueGrowth = previousRevenue > 0 ? ((currentRevenue - previousRevenue) / previousRevenue) * 100 : 0
+
+    const currentOrderCount = currentPeriodOrders?.length || 0
+    const previousOrderCount = previousPeriodOrders?.length || 0
+    const orderGrowth = previousOrderCount > 0 ? ((currentOrderCount - previousOrderCount) / previousOrderCount) * 100 : 0
+
+    // User growth
+    const { count: previousUserCount } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .lt('created_at', sevenDaysAgo.toISOString())
+
+    const userGrowth = (previousUserCount || 0) > 0 ? (((userCount || 0) - (previousUserCount || 0)) / (previousUserCount || 0)) * 100 : 0
+
+    // Aggregate trend by day
     const trendMap = new Map()
-    for (let i = 0; i < 7; i++) {
-        const d = new Date()
-        d.setDate(d.getDate() - i)
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
         const dateStr = d.toISOString().split('T')[0]
         trendMap.set(dateStr, 0)
     }
 
-    recentOrders?.forEach(order => {
+    currentPeriodOrders?.forEach(order => {
         const dateStr = order.created_at?.split('T')[0]
         if (trendMap.has(dateStr)) {
             trendMap.set(dateStr, trendMap.get(dateStr) + order.total_price)
@@ -57,7 +78,6 @@ export async function getDashboardStats() {
 
     const salesTrend = Array.from(trendMap.entries())
         .map(([date, amount]) => ({ date, amount }))
-        .sort((a, b) => a.date.localeCompare(b.date))
 
     // 4. Recent Activity (Last 5 orders)
     const { data: latestOrders } = await supabase
@@ -88,6 +108,11 @@ export async function getDashboardStats() {
         aov,
         userCount: userCount || 0,
         salesTrend,
-        latestOrders: enrichedOrders
+        latestOrders: enrichedOrders,
+        growth: {
+            revenue: revenueGrowth,
+            orders: orderGrowth,
+            users: userGrowth
+        }
     }
 }

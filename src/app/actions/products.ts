@@ -46,8 +46,8 @@ export async function addProduct(formData: FormData) {
     })
 
     if (error) {
-        console.error('Error adding product:', error)
-        throw new Error('Failed to add product')
+        console.error('Error adding product:', JSON.stringify(error, null, 2))
+        throw new Error(`Failed to add product: ${error.message} - ${error.details || ''} - ${error.hint || ''}`)
     }
 
     revalidatePath('/dashboard/products')

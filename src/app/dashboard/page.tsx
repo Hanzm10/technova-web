@@ -1,4 +1,6 @@
 import { getDashboardStats } from "@/app/actions/analytics"
+export const dynamic = 'force-dynamic'
+
 import { StatsCard } from "@/components/dashboard/StatsCard"
 import { RevenueChart } from "@/components/dashboard/RevenueChart"
 import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react"
@@ -19,23 +21,23 @@ export default async function DashboardPage() {
                 <StatsCard
                     title="Total Revenue"
                     value={`$${stats.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
-                    description="Gross lifetime sales"
+                    description={`${stats.growth.revenue >= 0 ? '+' : ''}${stats.growth.revenue.toFixed(1)}% vs last week`}
                     icon={DollarSign}
-                    trend="neutral"
+                    trend={stats.growth.revenue > 0 ? 'up' : stats.growth.revenue < 0 ? 'down' : 'neutral'}
                 />
                 <StatsCard
                     title="Customers"
                     value={stats.userCount}
-                    description="Total registered profiles"
+                    description={`${stats.growth.users >= 0 ? '+' : ''}${stats.growth.users.toFixed(1)}% vs last week`}
                     icon={Users}
-                    trend="up"
+                    trend={stats.growth.users > 0 ? 'up' : stats.growth.users < 0 ? 'down' : 'neutral'}
                 />
                 <StatsCard
                     title="Total Orders"
                     value={stats.orderCount}
-                    description="Processed transactions"
+                    description={`${stats.growth.orders >= 0 ? '+' : ''}${stats.growth.orders.toFixed(1)}% vs last week`}
                     icon={ShoppingCart}
-                    trend="neutral"
+                    trend={stats.growth.orders > 0 ? 'up' : stats.growth.orders < 0 ? 'down' : 'neutral'}
                 />
                 <StatsCard
                     title="Avg. Order Value"

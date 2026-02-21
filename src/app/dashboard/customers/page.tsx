@@ -1,4 +1,6 @@
 import { Badge } from "@/components/ui/badge"
+export const dynamic = 'force-dynamic'
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createClerkSupabaseClient } from "@/utils/supabase/server"
@@ -9,7 +11,12 @@ export default async function CustomersPage() {
     const supabase = await createClerkSupabaseClient()
     const { data: profiles } = await supabase
         .from('profiles')
-        .select('*')
+        .select(`
+            *,
+            orders (
+                total_price
+            )
+        `)
         .order('created_at', { ascending: false })
 
     const client = await clerkClient()
@@ -17,10 +24,12 @@ export default async function CustomersPage() {
         try {
             const user = await client.users.getUser(profile.id)
             return {
-                ...profile,
+                profile,
                 name: `${user.firstName} ${user.lastName}`.trim() || user.username || 'Anonymous',
                 image_url: user.imageUrl,
-                email: profile.email
+                email: profile.email,
+                totalSpent: (profile.orders as any[] || []).reduce((acc, o) => acc + (o.total_price || 0), 0),
+                orderCount: (profile.orders as any[] || []).length
             }
         } catch (e) {
             return { ...profile, name: 'Unknown User', image_url: '', email: profile.email }
@@ -46,8 +55,8 @@ export default async function CustomersPage() {
                             <TableHeader>
                                 <TableRow className="hover:bg-transparent border-slate-100/50">
                                     <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Customer</TableHead>
-                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Email</TableHead>
-                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Role</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter text-right">Orders</TableHead>
+                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter text-right">Total Spent</TableHead>
                                     <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Joined</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -67,10 +76,11 @@ export default async function CustomersPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-slate-500 font-medium">{user.email}</TableCell>
-                                        <TableCell>
-                                            <Badge variant="outline" className="rounded-full bg-white text-slate-900 border-slate-200 px-3 font-bold text-[10px] uppercase tracking-wider shadow-sm">
-                                                {user.role}
-                                            </Badge>
+                                        <TableCell className="text-right font-black text-slate-900">
+                                            {user.orderCount}
+                                        </TableCell>
+                                        <TableCell className="text-right font-black text-emerald-600">
+                                            ${user.totalSpent.toFixed(2)}
                                         </TableCell>
                                         <TableCell className="text-right text-slate-400 font-mono text-[10px]">
                                             {new Date(user.created_at).toLocaleDateString()}
@@ -94,7 +104,8 @@ export default async function CustomersPage() {
                                     </Badge>
                                 }
                             >
-                                <DashboardMobileCardItem label="Role" value={user.role} />
+                                <DashboardMobileCardItem label="Total Spent" value={`$${user.totalSpent.toFixed(2)}`} />
+                                <DashboardMobileCardItem label="Orders" value={user.orderCount.toString()} />
                                 <DashboardMobileCardItem label="Joined" value={new Date(user.created_at).toLocaleDateString()} />
                                 <DashboardMobileCardItem label="Email" value={user.email} />
                                 <DashboardMobileCardItem label="User ID" value={user.id.slice(0, 12) + '...'} />

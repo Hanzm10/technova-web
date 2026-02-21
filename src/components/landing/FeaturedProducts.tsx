@@ -54,7 +54,7 @@ export const FeaturedProducts: React.FC = () => {
                     </div>
                     <div className="mt-6 md:mt-0">
                         <Link href="/catalog">
-                            <button className="text-foreground font-semibold border-b-2 border-foreground pb-1 hover:text-muted-foreground hover:border-muted-foreground transition-colors">
+                            <button className="bg-slate-900 text-white text-sm font-bold py-4 px-8 rounded-full hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-95 uppercase tracking-wider">
                                 VIEW ALL BRANDS
                             </button>
                         </Link>
@@ -94,10 +94,10 @@ export const FeaturedProducts: React.FC = () => {
                                                     toggleFavorite(product.id);
                                                 }}
                                                 className={cn(
-                                                    "p-2 rounded-full backdrop-blur-sm transition-colors shadow-sm",
+                                                    "p-2 rounded-full backdrop-blur-md transition-colors shadow-md border border-white/20",
                                                     isFavorite(product.id)
                                                         ? "bg-slate-900 text-white"
-                                                        : "bg-card/80 text-foreground hover:bg-primary hover:text-primary-foreground"
+                                                        : "bg-white/95 text-slate-900 hover:bg-slate-900 hover:text-white"
                                                 )}
                                             >
                                                 <Heart size={18} fill={isFavorite(product.id) ? "currentColor" : "none"} />
@@ -106,14 +106,14 @@ export const FeaturedProducts: React.FC = () => {
 
                                         {product.tag && (
                                             <div className="absolute top-4 left-4 z-10">
-                                                <span className="px-3 py-1 rounded-full bg-primary/90 backdrop-blur-sm text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
+                                                <span className="px-3 py-1.5 rounded-full bg-slate-900/95 backdrop-blur-md border border-white/20 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
                                                     {product.tag}
                                                 </span>
                                             </div>
                                         )}
 
                                         {/* Bottom Overlay Action */}
-                                        <div className="absolute bottom-4 left-4 right-4 translate-y-[calc(100%+1.5rem)] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                                        <div className="absolute bottom-4 left-4 right-4 translate-y-0 opacity-100 md:translate-y-[calc(100%+1.5rem)] md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
                                             <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl flex justify-between items-center shadow-lg border border-slate-100">
                                                 <div className="flex flex-col">
                                                     <span className="text-xs font-semibold text-foreground truncate max-w-[120px]">{product.name}</span>

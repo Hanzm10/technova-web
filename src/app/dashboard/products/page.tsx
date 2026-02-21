@@ -4,14 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createClerkSupabaseClient as createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
+import { PlusCircle, Pencil, Trash2, Image as ImageIcon } from 'lucide-react'
 import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
 import { DeleteProductButton } from "./components/DeleteProductButton"
 import { DeleteProductMobileButton } from "./components/DeleteProductMobileButton"
+import { EditProductModal } from "./components/EditProductModal"
+import Image from 'next/image'
 
 export default async function ProductsPage() {
     const supabase = await createClient()
-    const { data: products } = await supabase.from('products').select('*')
+    const { data: products } = await supabase.from('products').select(`
+        *,
+        order_items ( id )
+    `)
     const displayProducts = products || []
 
     return (
@@ -50,7 +55,18 @@ export default async function ProductsPage() {
                                 {displayProducts.map((product: any) => (
                                     <TableRow key={product.id} className="hover:bg-slate-50/50 border-slate-50/50 transition-colors">
                                         <TableCell className="font-bold text-slate-900 py-6 whitespace-nowrap">
-                                            {product.name}
+                                            <div className="flex items-center gap-4">
+                                                {product.image ? (
+                                                    <div className="h-10 w-10 relative rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 shadow-sm border border-slate-200/50">
+                                                        <Image src={product.image} alt={product.name} fill className="object-cover" />
+                                                    </div>
+                                                ) : (
+                                                    <div className="h-10 w-10 relative rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 flex items-center justify-center border border-slate-200/50">
+                                                        <ImageIcon className="h-4 w-4 text-slate-400" />
+                                                    </div>
+                                                )}
+                                                <span>{product.name}</span>
+                                            </div>
                                         </TableCell>
                                         <TableCell>
                                             <Badge variant="outline" className="rounded-full bg-slate-100 text-slate-600 border-none px-3 font-bold text-[10px] uppercase tracking-wider">
@@ -62,12 +78,8 @@ export default async function ProductsPage() {
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
-                                                <Button variant="ghost" size="icon" asChild className="hover:bg-slate-100 text-slate-500 hover:text-slate-900">
-                                                    <Link href={`/dashboard/products/edit/${product.id}`}>
-                                                        <Pencil className="h-4 w-4" />
-                                                    </Link>
-                                                </Button>
-                                                <DeleteProductButton id={product.id} />
+                                                <EditProductModal product={product} />
+                                                <DeleteProductButton id={product.id} hasTransactions={(product.order_items?.length || 0) > 0} />
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -97,12 +109,8 @@ export default async function ProductsPage() {
                                 }
                                 actions={
                                     <>
-                                        <Button variant="outline" className="flex-1 border-slate-200 text-slate-600 hover:text-slate-900 font-bold" asChild>
-                                            <Link href={`/dashboard/products/edit/${product.id}`}>
-                                                <Pencil className="mr-2 h-4 w-4" /> Edit
-                                            </Link>
-                                        </Button>
-                                        <DeleteProductMobileButton id={product.id} />
+                                        <EditProductModal product={product} />
+                                        <DeleteProductMobileButton id={product.id} hasTransactions={(product.order_items?.length || 0) > 0} />
                                     </>
                                 }
                             >

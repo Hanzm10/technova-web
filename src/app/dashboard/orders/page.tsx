@@ -1,9 +1,12 @@
 import { createClerkSupabaseClient as createClient } from '@/utils/supabase/server'
+export const dynamic = 'force-dynamic'
+
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
 import { createClerkSupabaseClient } from "@/utils/supabase/server"
+import { OrderStatusSelect } from "./components/OrderStatusSelect"
 
 export default async function OrdersPage() {
     const supabase = await createClerkSupabaseClient()
@@ -11,6 +14,9 @@ export default async function OrdersPage() {
         .from('orders')
         .select(`
             *,
+            profiles (
+                email
+            ),
             order_items (
                 quantity,
                 products (
@@ -69,9 +75,7 @@ export default async function OrdersPage() {
                                         <TableCell className="font-mono text-xs font-bold text-slate-400">{order.id.slice(0, 8)}...</TableCell>
                                         <TableCell className="font-bold text-slate-900">{order.productName}</TableCell>
                                         <TableCell>
-                                            <Badge variant="outline" className="rounded-full bg-slate-900 text-white border-none px-3 font-bold text-[10px] uppercase tracking-wider">
-                                                {order.status}
-                                            </Badge>
+                                            <OrderStatusSelect orderId={order.id} initialStatus={order.status} />
                                         </TableCell>
                                         <TableCell className="text-right font-black text-slate-900">
                                             ${order.total_price.toFixed(2)}
@@ -100,9 +104,7 @@ export default async function OrdersPage() {
                                 title={order.productName}
                                 subtitle={`Order #${order.id.slice(0, 8)}`}
                                 status={
-                                    <Badge variant="outline" className="rounded-full bg-slate-900 text-white border-none px-2 py-0 font-bold text-[9px] uppercase tracking-tight">
-                                        {order.status}
-                                    </Badge>
+                                    <OrderStatusSelect orderId={order.id} initialStatus={order.status} />
                                 }
                             >
                                 <DashboardMobileCardItem label="Total Price" value={`$${order.total_price.toFixed(2)}`} />

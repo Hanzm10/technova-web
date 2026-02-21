@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
 
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { ToastProvider } from '@/components/layout/ToastProvider'
 
 const RevenueCatProvider = dynamic(
@@ -19,8 +20,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ClerkProvider>
             <QueryClientProvider client={queryClient}>
                 <RevenueCatProvider>
-                    {children}
-                    <ToastProvider />
+                    <TooltipProvider>
+                        {children}
+                        <ToastProvider />
+                    </TooltipProvider>
                 </RevenueCatProvider>
             </QueryClientProvider>
         </ClerkProvider>

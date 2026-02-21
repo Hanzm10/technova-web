@@ -7,6 +7,9 @@ import { Database } from '@/types/database.types'
 import { CatalogFilters } from '@/components/catalog/CatalogFilters'
 import { ProductGrid } from '@/components/catalog/ProductGrid'
 import { Marquee } from '@/components/landing/Marquee'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -43,6 +46,15 @@ const CatalogContent = () => {
 
     return (
         <div className="container mx-auto px-6 py-12">
+            <div className="mb-8">
+                <Button variant="ghost" asChild className="rounded-full hover:bg-black/5 px-6 font-bold text-slate-600 hover:text-slate-900 transition-colors">
+                    <Link href="/">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Landing Page
+                    </Link>
+                </Button>
+            </div>
+
             <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tighter mb-4">
                 EXPLORE <br /> THE <span className="text-slate-500 italic font-serif font-normal">catalog</span>
             </h1>
