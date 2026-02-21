@@ -1,12 +1,12 @@
-import { createClerkSupabaseClient as createClient } from '@/utils/supabase/server'
-export const dynamic = 'force-dynamic'
-
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
 import { createClerkSupabaseClient } from "@/utils/supabase/server"
 import { OrderStatusSelect } from "./components/OrderStatusSelect"
+import { OrderTable } from "./components/OrderTable"
+import { Package2 } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 
 export default async function OrdersPage() {
     const supabase = await createClerkSupabaseClient()
@@ -26,7 +26,7 @@ export default async function OrdersPage() {
         `)
         .order('created_at', { ascending: false })
 
-    const displayOrders = (orders || []).map((order: any) => {
+    const processedOrders = (orders || []).map((order: any) => {
         const items = order.order_items || []
         const productNames = items.map((item: any) => item.products?.name).filter(Boolean)
 
@@ -58,47 +58,18 @@ export default async function OrdersPage() {
                 </CardHeader>
                 <CardContent className="px-0">
                     {/* Desktop View */}
-                    <div className="hidden md:block overflow-x-auto">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="hover:bg-transparent border-slate-100/50">
-                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Order ID</TableHead>
-                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Product</TableHead>
-                                    <TableHead className="font-bold text-slate-900 uppercase tracking-tighter">Status</TableHead>
-                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Total</TableHead>
-                                    <TableHead className="text-right font-bold text-slate-900 uppercase tracking-tighter">Date</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {displayOrders.map((order: any) => (
-                                    <TableRow key={order.id} className="hover:bg-slate-50/50 border-slate-50/50 transition-colors">
-                                        <TableCell className="font-mono text-xs font-bold text-slate-400">{order.id.slice(0, 8)}...</TableCell>
-                                        <TableCell className="font-bold text-slate-900">{order.productName}</TableCell>
-                                        <TableCell>
-                                            <OrderStatusSelect orderId={order.id} initialStatus={order.status} />
-                                        </TableCell>
-                                        <TableCell className="text-right font-black text-slate-900">
-                                            ${order.total_price.toFixed(2)}
-                                        </TableCell>
-                                        <TableCell className="text-right text-slate-500 font-medium">
-                                            {new Date(order.created_at).toLocaleDateString()}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                {displayOrders.length === 0 && (
-                                    <TableRow>
-                                        <TableCell colSpan={5} className="h-32 text-center text-slate-400 font-medium italic">
-                                            No orders found.
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                    <div className="hidden md:block">
+                        <OrderTable orders={processedOrders} />
+                        {processedOrders.length === 0 && (
+                            <div className="h-32 flex items-center justify-center text-slate-400 font-medium italic">
+                                No orders found.
+                            </div>
+                        )}
                     </div>
 
                     {/* Mobile View */}
                     <div className="md:hidden space-y-4 px-2">
-                        {displayOrders.map((order: any) => (
+                        {processedOrders.map((order: any) => (
                             <DashboardMobileCard
                                 key={order.id}
                                 title={order.productName}
@@ -107,13 +78,37 @@ export default async function OrdersPage() {
                                     <OrderStatusSelect orderId={order.id} initialStatus={order.status} />
                                 }
                             >
-                                <DashboardMobileCardItem label="Total Price" value={`$${order.total_price.toFixed(2)}`} />
-                                <DashboardMobileCardItem label="Date" value={new Date(order.created_at).toLocaleDateString()} />
-                                <DashboardMobileCardItem label="Full ID" value={order.id} />
-                                <DashboardMobileCardItem label="User ID" value={order.user_id} />
+                                <div className="col-span-2 space-y-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <DashboardMobileCardItem label="Total Price" value={`$${order.total_price.toFixed(2)}`} />
+                                        <DashboardMobileCardItem label="Date" value={new Date(order.created_at).toLocaleDateString()} />
+                                    </div>
+
+                                    <div className="bg-slate-50/80 rounded-2xl p-4 border border-slate-100 shadow-inner">
+                                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">
+                                            <Package2 className="h-3 w-3" />
+                                            Order Items
+                                        </div>
+                                        <div className="space-y-3">
+                                            {order.order_items.map((item: any, idx: number) => (
+                                                <div key={idx} className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs font-black text-slate-400">{item.quantity}x</span>
+                                                        <span className="text-xs font-bold text-slate-700">{item.products?.name}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-2 border-t border-slate-100 pt-4">
+                                        <DashboardMobileCardItem label="Order ID" value={order.id} />
+                                        <DashboardMobileCardItem label="Customer" value={order.profiles?.email || 'Guest'} />
+                                    </div>
+                                </div>
                             </DashboardMobileCard>
                         ))}
-                        {displayOrders.length === 0 && (
+                        {processedOrders.length === 0 && (
                             <div className="py-20 text-center text-slate-400 font-medium italic">
                                 No orders found.
                             </div>
