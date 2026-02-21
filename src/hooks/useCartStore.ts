@@ -72,7 +72,7 @@ export const useCartStore = create<CartStore>()(
             items: [],
             totalPrice: 0,
 
-            addItem: async (product, userId, token) => {
+            addItem: async (product, userId?, token?) => {
                 const items = get().items
                 const currentTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -113,7 +113,9 @@ export const useCartStore = create<CartStore>()(
                             )
                     }
                 }
+                return true
             },
+
 
             removeItem: async (productId, userId, token) => {
                 const items = get().items.filter((item) => item.id !== productId)
