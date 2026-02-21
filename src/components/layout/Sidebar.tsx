@@ -22,7 +22,7 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
     const sidebarContent = (
         <>
             {/* Brand Header */}
-            <div className={cn("px-6 py-10", isMobile ? "py-6" : "")}>
+            <div className={cn("px-6 py-10", isMobile ? "py-8" : "")}>
                 <Link href="/" className="group flex flex-col">
                     <span className="text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none transition-transform duration-500 group-hover:scale-[1.02] origin-left">TECHNOVA</span>
                     {!isMobile && (
@@ -81,9 +81,9 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
             </nav>
 
             {/* User Profile Section */}
-            <div className={cn("mt-auto p-4", isMobile ? "pb-10" : "pb-8")}>
+            <div className={cn("mt-auto p-4", isMobile ? "pb-12" : "pb-8")}>
                 <div className={cn(
-                    "rounded-[2rem] bg-white/40 border border-white/60 p-4 shadow-xl shadow-slate-200/50 backdrop-blur-xl",
+                    "rounded-[2rem] bg-white border border-slate-100 p-4 shadow-xl shadow-slate-200/50 backdrop-blur-xl",
                     isMobile ? "flex items-center justify-between" : ""
                 )}>
                     <div className="flex items-center gap-3">
@@ -92,7 +92,7 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
                                 userButtonAvatarBox: "h-10 w-10 border-2 border-white shadow-sm"
                             }
                         }} />
-                        <div className="flex flex-col overflow-hidden">
+                        <div className="flex flex-col overflow-hidden text-left">
                             <span className="font-black text-[11px] text-slate-900 uppercase truncate">
                                 {user?.firstName || 'Admin'} {user?.lastName}
                             </span>

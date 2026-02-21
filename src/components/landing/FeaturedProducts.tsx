@@ -43,7 +43,7 @@ export const FeaturedProducts: React.FC = () => {
     }, [supabase]);
 
     return (
-        <section className="py-24 bg-background">
+        <section className="py-24 bg-background overflow-hidden w-full">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
                     <div>

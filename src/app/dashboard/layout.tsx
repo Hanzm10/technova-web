@@ -17,12 +17,12 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-[#F8FAFC]">
-            <Sidebar className="hidden md:flex" />
-            <div className="flex-1 flex flex-col font-sans relative">
+        <div className="flex min-h-screen bg-[#F8FAFC] overflow-x-hidden relative">
+            <Sidebar className="hidden md:flex shrink-0" />
+            <div className="flex-1 flex flex-col min-w-0 font-sans relative">
                 <DashboardMobileNav title="TechNova Admin" />
-                <main className="flex-1 p-4 md:p-8 lg:p-10">
-                    <div className="max-w-7xl mx-auto">
+                <main className="flex-1 p-4 md:p-8 lg:p-10 w-full overflow-x-hidden">
+                    <div className="max-w-7xl mx-auto w-full">
                         {children}
                     </div>
                 </main>

@@ -9,7 +9,7 @@ import { Newsletter } from "@/components/landing/Newsletter";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#E8ECEF]">
+    <div className="flex flex-col min-h-screen bg-[#E8ECEF] overflow-x-hidden w-full relative">
       <HeroSection />
 
       <div className="py-8">

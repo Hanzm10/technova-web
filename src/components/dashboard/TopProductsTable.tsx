@@ -20,7 +20,8 @@ export function TopProductsTable({ products }: TopProductsTableProps) {
                 <CardDescription className="text-slate-500 font-medium">Best performing products by total revenue.</CardDescription>
             </CardHeader>
             <CardContent className="px-0">
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                     <Table>
                         <TableHeader>
                             <TableRow className="hover:bg-transparent border-slate-100/50">
@@ -41,16 +42,37 @@ export function TopProductsTable({ products }: TopProductsTableProps) {
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            {products.length === 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={4} className="h-32 text-center text-slate-400 font-medium italic">
-                                        No sales data available.
-                                    </TableCell>
-                                </TableRow>
-                            )}
                         </TableBody>
                     </Table>
                 </div>
+
+                {/* Mobile List View */}
+                <div className="md:hidden space-y-4 px-2">
+                    {products.map((product, index) => (
+                        <div key={index} className="group p-4 rounded-2xl bg-slate-50/50 border border-slate-100/50 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+                            <div className="flex justify-between items-start mb-2">
+                                <div className="flex flex-col gap-1">
+                                    <h4 className="font-black text-slate-900 uppercase tracking-tighter text-sm leading-tight group-hover:text-blue-600 transition-colors">{product.name}</h4>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{product.category}</span>
+                                </div>
+                                <div className="text-right">
+                                    <span className="block font-black text-slate-900 text-base leading-none tracking-tight">
+                                        ${product.revenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1 block px-2 py-0.5 bg-white rounded-full border border-slate-100">
+                                        {product.units} units
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {products.length === 0 && (
+                    <div className="h-32 flex items-center justify-center text-slate-400 font-medium italic">
+                        No sales data available.
+                    </div>
+                )}
             </CardContent>
         </Card>
     )

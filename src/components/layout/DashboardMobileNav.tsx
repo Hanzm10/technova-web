@@ -52,7 +52,7 @@ export function DashboardMobileNav({ title }: { title: string }) {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] md:hidden"
+                            className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] md:hidden"
                         />
 
                         {/* Menu Panel - Slides in from Right like Landing Page */}
@@ -61,7 +61,7 @@ export function DashboardMobileNav({ title }: { title: string }) {
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white/80 backdrop-blur-3xl z-[101] shadow-2xl border-l border-white/40 flex flex-col md:hidden"
+                            className="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white z-[101] shadow-2xl border-l border-slate-200 flex flex-col md:hidden"
                         >
                             {/* Close Button Only */}
                             <div className="absolute top-6 right-6 z-50">

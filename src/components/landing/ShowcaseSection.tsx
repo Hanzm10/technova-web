@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export const ShowcaseSection: React.FC = () => {
     return (
-        <section className="py-12 bg-background px-4">
+        <section className="py-12 bg-background px-4 overflow-hidden">
             <div className="container mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Left Card - Winter */}

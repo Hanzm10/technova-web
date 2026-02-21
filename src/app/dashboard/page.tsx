@@ -19,7 +19,7 @@ export default async function DashboardPage() {
                 <p className="text-slate-500 font-medium">Real-time metrics and business intelligence overview.</p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <StatsCard
                     title="Total Revenue"
                     value={`$${stats.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
