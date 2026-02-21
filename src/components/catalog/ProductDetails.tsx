@@ -79,9 +79,11 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
 
                     <div className="flex flex-row gap-4">
                         <Button
-                            onClick={() => {
-                                addItem(product)
-                                addToast(`${product.name} added to cart`)
+                            onClick={async () => {
+                                const success = await addItem(product)
+                                if (success) {
+                                    addToast(`${product.name} added to cart`)
+                                }
                             }}
                             className="flex-1 bg-slate-900 text-white hover:bg-slate-800 h-16 px-10 rounded-2xl flex items-center justify-center gap-3 text-lg font-bold shadow-xl shadow-slate-900/10 group"
                         >

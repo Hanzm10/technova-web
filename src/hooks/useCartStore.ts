@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Database } from '@/types/database.types'
 import { createClient } from '@/utils/supabase/client'
+import { useToastStore } from './useToastStore'
 
 type Product = Database['public']['Tables']['products']['Row']
 type CartItemDB = Database['public']['Tables']['cart_items']['Row']
@@ -10,10 +11,12 @@ export interface CartItem extends Product {
     quantity: number
 }
 
+const MAX_TOTAL_QUANTITY = 20
+
 interface CartStore {
     items: CartItem[]
     totalPrice: number
-    addItem: (product: Product, userId?: string, token?: string | null) => Promise<void>
+    addItem: (product: Product, userId?: string, token?: string | null) => Promise<boolean>
     removeItem: (productId: string, userId?: string, token?: string | null) => Promise<void>
     updateQuantity: (productId: string, quantity: number, userId?: string, token?: string | null) => Promise<void>
     clearCart: () => void
@@ -71,6 +74,13 @@ export const useCartStore = create<CartStore>()(
 
             addItem: async (product, userId, token) => {
                 const items = get().items
+                const currentTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0)
+
+                if (currentTotalQuantity >= MAX_TOTAL_QUANTITY) {
+                    useToastStore.getState().addToast("Cart limit reached (max 20 items)", "error")
+                    return false
+                }
+
                 const existingItem = items.find((item) => item.id === product.id)
                 let newItems
 
@@ -125,12 +135,22 @@ export const useCartStore = create<CartStore>()(
             },
 
             updateQuantity: async (productId, quantity, userId, token) => {
-                const safeQuantity = Math.max(1, quantity)
-                const items = get().items.map((item) =>
+                const items = get().items
+                const otherItemsQuantity = items
+                    .filter(item => item.id !== productId)
+                    .reduce((acc, item) => acc + item.quantity, 0)
+
+                if (quantity > MAX_TOTAL_QUANTITY - otherItemsQuantity) {
+                    useToastStore.getState().addToast("Cart limit reached (max 20 items)", "error")
+                }
+
+                const safeQuantity = Math.max(1, Math.min(quantity, MAX_TOTAL_QUANTITY - otherItemsQuantity))
+
+                const newItems = items.map((item) =>
                     item.id === productId ? { ...item, quantity: safeQuantity } : item
                 )
-                const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
-                set({ items, totalPrice: total })
+                const total = newItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+                set({ items: newItems, totalPrice: total })
 
                 // DB Sync
                 const auth = await getAuthFromWindow(userId, token)

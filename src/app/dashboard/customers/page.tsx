@@ -7,6 +7,7 @@ import { createClerkSupabaseClient } from "@/utils/supabase/server"
 import { clerkClient } from "@clerk/nextjs/server"
 import { DashboardMobileCard, DashboardMobileCardItem } from "@/components/dashboard/DashboardMobileCard"
 import Image from "next/image"
+import { formatDateTime } from "@/lib/utils"
 
 
 export default async function CustomersPage() {
@@ -102,8 +103,8 @@ export default async function CustomersPage() {
                                         <TableCell className="text-right font-black text-emerald-600">
                                             ${user.totalSpent.toFixed(2)}
                                         </TableCell>
-                                        <TableCell className="text-right text-slate-400 font-mono text-[10px]">
-                                            {new Date(user.created_at).toLocaleDateString()}
+                                        <TableCell className="text-right text-slate-400 font-mono text-[10px] whitespace-nowrap">
+                                            {formatDateTime(user.created_at)}
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -126,7 +127,7 @@ export default async function CustomersPage() {
                             >
                                 <DashboardMobileCardItem label="Total Spent" value={`$${user.totalSpent.toFixed(2)}`} />
                                 <DashboardMobileCardItem label="Orders" value={user.orderCount.toString()} />
-                                <DashboardMobileCardItem label="Joined" value={new Date(user.created_at).toLocaleDateString()} />
+                                < DashboardMobileCardItem label="Joined" value={formatDateTime(user.created_at)} />
                                 <DashboardMobileCardItem label="Email" value={user.email} />
                                 <DashboardMobileCardItem label="User ID" value={user.id.slice(0, 12) + '...'} />
                             </DashboardMobileCard>

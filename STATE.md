@@ -1,23 +1,17 @@
 # Project State: TechNova Web Platform
 
 ## Current Phase
-- **Phase 8: Product CRUD & Cart Persistence**
+- **Phase 9: Admin Dashboard Refinement**
 
 ## Current Context
-- Admin Product CRUD implementation finished. Proceeding to manual verification and mobile layout check.
-- Cart Persistence synced with Supabase db via Zustand store, Clerk Auth triggers integrated.
-- Architectural documentation updated in `docs/ARCHITECTURE.md`.
-- Project is ready for production release.
+- Implementing Admin Dashboard improvements: Copy Order ID, Search functionality, Sidebar navigation, and Date/Time refactor.
+- Implementation plan approved by user.
 
 ## Recent Activity
-- Built Admin Product List Data Table with Edit/Delete Actions.
-- Built Admin Product Creation and Edit UI based on `ui-ux-pro-max` guidelines.
-- Implemented Server Actions for Create, Update, and Delete.
-- Performed a security sweep, removing all debug logs and verifying secret hygiene.
-- Initialized `docs/ARCHITECTURE.md` with system map and context restoration.
-- Implemented Global Search Modal (`cmdk`) with scroll lock.
-- Optimized Hero Section animations for immediate trigger on mobile.
-- Completed User Cart Persistence integration and backend syncing.
+- Planned and approved Admin Dashboard improvements.
 
 ## Next Steps
-- Verify Admin Product CRUD functionality and Mobile usability.
+- Implement `formatDateTime` utility.
+- Add "Return to Store" button in sidebar.
+- Implement Copy Order ID and Search features in Orders tab.
+- Refactor date/time formatting across Orders and Customers.

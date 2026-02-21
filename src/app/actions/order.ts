@@ -78,7 +78,6 @@ export async function createOrder(params: CreateOrderParams) {
     const { data: orderData, error: orderError } = await supabase
         .from('orders')
         .insert({
-            user_id: userId,
             profile_id: userId,
             total_price: calculatedTotal,
             status: 'completed' // Assuming immediate success from RevenueCat
@@ -103,9 +102,10 @@ export async function createOrder(params: CreateOrderParams) {
         .insert(finalOrderItems)
 
     if (itemsError) {
-        console.error('Failed to create order items', itemsError)
-        // Ideally we would rollback the order here, but for now just throw
-        throw new Error(`Failed to create order items: ${itemsError.message}`)
+        console.error(`FATAL: Failed to create order items for order ${orderId}. Items were validated but insertion failed.`, itemsError)
+        // Note: In a production system, we'd use a DB transaction/RPC to prevent this orphan state.
+        // For now, logging the orderId ensures we can manually recover if needed.
+        throw new Error(`Critical persistence error: ${itemsError.message}. Order ID: ${orderId}`)
     }
 
     return { success: true, orderId }

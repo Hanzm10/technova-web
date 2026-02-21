@@ -80,8 +80,30 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
                 })}
             </nav>
 
-            {/* User Profile Section */}
-            <div className={cn("mt-auto p-4", isMobile ? "pb-12" : "pb-8")}>
+            {/* User Profile & Return to Store Section */}
+            <div className={cn("mt-auto p-4 space-y-4", isMobile ? "pb-12" : "pb-8")}>
+                {/* Return to Store Button */}
+                <Link
+                    href="/"
+                    className={cn(
+                        "group relative flex items-center justify-between rounded-[1.5rem] transition-all duration-300",
+                        isMobile ? "p-5" : "px-5 py-4",
+                        "text-slate-500 hover:bg-slate-900 hover:text-white shadow-xl hover:shadow-slate-900/20"
+                    )}
+                >
+                    <div className="flex items-center gap-4 relative z-10">
+                        <div className="p-2 rounded-xl bg-slate-50 group-hover:bg-slate-800 transition-colors">
+                            <LogOut className="h-4 w-4 rotate-180" />
+                        </div>
+                        <span className={cn(
+                            "font-black uppercase tracking-wider",
+                            isMobile ? "text-lg" : "text-[11px]"
+                        )}>
+                            Return to Store
+                        </span>
+                    </div>
+                </Link>
+
                 <div className={cn(
                     "rounded-[2rem] bg-white border border-slate-100 p-4 shadow-xl shadow-slate-200/50 backdrop-blur-xl",
                     isMobile ? "flex items-center justify-between" : ""

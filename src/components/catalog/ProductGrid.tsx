@@ -100,10 +100,12 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 data-testid={`add-to-cart-${product.id}`}
-                                                onClick={(e) => {
+                                                onClick={async (e) => {
                                                     e.preventDefault()
-                                                    addItem(product)
-                                                    addToast(`${product.name} added to cart`)
+                                                    const success = await addItem(product)
+                                                    if (success) {
+                                                        addToast(`${product.name} added to cart`)
+                                                    }
                                                 }}
                                                 className="p-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200"
                                                 aria-label="Add to cart"

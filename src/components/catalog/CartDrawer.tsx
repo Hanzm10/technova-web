@@ -57,7 +57,9 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                         <div className="p-8 flex justify-between items-center border-b border-slate-100">
                             <div>
                                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Shopping Bag</h2>
-                                <p className="text-slate-500 text-sm">{items.length} items selected</p>
+                                <p className="text-slate-500 text-sm">
+                                    {items.reduce((acc, item) => acc + item.quantity, 0)}/20 items selected
+                                </p>
                             </div>
                             <button
                                 onClick={onClose}
@@ -130,6 +132,10 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                         {/* Footer */}
                         {items.length > 0 && (
                             <div className="p-8 bg-white border-t border-slate-100 space-y-6">
+                                <div className="flex justify-between items-center text-xs uppercase tracking-widest text-slate-400 font-bold">
+                                    <span>Total Quantity Limit</span>
+                                    <span>{items.reduce((acc, item) => acc + item.quantity, 0)} / 20</span>
+                                </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-slate-500 font-medium">Subtotal</span>
                                     <span className="text-2xl font-bold text-slate-900">

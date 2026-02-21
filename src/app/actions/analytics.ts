@@ -82,7 +82,7 @@ export async function getDashboardStats() {
     // 4. Recent Activity (Last 5 orders)
     const { data: latestOrders } = await supabase
         .from('orders')
-        .select('id, user_id, total_price, status, created_at')
+        .select('id, profile_id, total_price, status, created_at')
         .order('created_at', { ascending: false })
         .limit(5)
 
@@ -92,7 +92,10 @@ export async function getDashboardStats() {
 
     const enrichedOrders = await Promise.all((latestOrders || []).map(async (order) => {
         try {
-            const user = await client.users.getUser(order.user_id)
+            const profileId = order.profile_id
+            if (!profileId) throw new Error('No profile_id')
+
+            const user = await client.users.getUser(profileId)
             const firstName = user.firstName || ''
             const lastName = user.lastName || ''
             const fullName = `${firstName} ${lastName}`.trim()
