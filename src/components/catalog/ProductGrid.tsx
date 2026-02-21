@@ -91,7 +91,7 @@ export const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                                 )}
 
                                 {/* Bottom Overlay Action */}
-                                <div className="absolute bottom-6 left-6 right-6 translate-y-[calc(100%+2rem)] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                                <div className="absolute bottom-6 left-6 right-6 translate-y-0 opacity-100 sm:translate-y-[calc(100%+2rem)] sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-500 ease-out">
                                     <div className="bg-white/95 backdrop-blur-xl p-4 rounded-[1.5rem] flex justify-between items-center shadow-xl border border-white/20">
                                         <div className="flex flex-col">
                                             <span className="text-xs font-bold text-slate-900 uppercase tracking-tight">{product.name}</span>
