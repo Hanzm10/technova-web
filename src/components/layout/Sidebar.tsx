@@ -32,7 +32,7 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
             </div>
 
             {/* Navigation */}
-            <nav className={cn("flex-1 space-y-1", isMobile ? "px-0" : "px-4")}>
+            <nav className={cn("flex-1 space-y-2", isMobile ? "px-6" : "px-4")}>
                 {!isMobile && (
                     <div className="px-4 mb-6">
                         <span className="text-[10px] font-black tracking-[0.3em] text-slate-300 uppercase">System</span>
@@ -112,7 +112,7 @@ export function Sidebar({ className, isMobile = false }: { className?: string, i
 
     return (
         <aside className={cn(
-            "flex flex-col h-screen w-72 bg-white/40 backdrop-blur-3xl border-r border-white/40 shadow-2xl sticky top-0",
+            "flex flex-col h-screen w-72 bg-white/40 backdrop-blur-3xl border-r border-white/40 shadow-2xl fixed top-0 left-0 z-30",
             className
         )}>
             {sidebarContent}
